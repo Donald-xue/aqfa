@@ -1,7 +1,6 @@
 // pages/match/match.js  (CloudBase version + Clear/Delete)
 
 const { loadLeague } = require("../../utils/league");
-const { loadPlayers } = require("../../utils/players");
 const {
   ensureCloudMatchesInitialized,
   fetchMatchById,
@@ -10,7 +9,6 @@ const {
   // deleteMatchById
 } = require("../../utils/cloudMatchStore");
 const {
-  ensureCloudPlayersInitialized,
   fetchPlayersByTeam
 } = require("../../utils/cloudPlayerStore");
 
@@ -20,7 +18,7 @@ function num(v) {
 }
 
 async function initPlayerRows(teamId) {
-  const list = loadPlayers(teamId) || [];
+  const list = await fetchPlayersByTeam(teamId); // ✅ 云端
   return list.map(p => ({
     teamId,
     playerId: p.id,
@@ -69,7 +67,6 @@ Page({
 
     try {
       await ensureCloudMatchesInitialized(teams);
-      await ensureCloudPlayersInitialized(teams, loadPlayers);
       await this.prefillFromCloud(fixtureId);
     } catch (err) {
       console.error("match onLoad error:", err);

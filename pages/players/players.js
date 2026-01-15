@@ -6,7 +6,6 @@ const { loadLeague } = require("../../utils/league");
 const { loadPlayers, addPlayer: addPlayerLocal } = require("../../utils/players");
 
 const {
-  ensureCloudPlayersInitialized,
   fetchPlayersByTeam,
   addCloudPlayer,
   deleteCloudPlayer
@@ -26,9 +25,6 @@ Page({
     const teamNames = (teams || []).map(t => t.name);
 
     this.setData({ teams, teamNames, teamIndex: 0 });
-
-    // ✅ 首次把本地 players 迁移到云端（云端有数据就跳过）
-    await ensureCloudPlayersInitialized(teams, loadPlayers);
 
     await this.refreshPlayers();
   },
