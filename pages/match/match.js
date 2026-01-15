@@ -28,7 +28,7 @@ async function initPlayerRows(teamId) {
     sub: false,
     goals: "0",
     assists: "0",
-    yellow: "0",
+    MVP: "0",
     red: "0"
   }));
 }
@@ -101,7 +101,7 @@ Page({
           sub: !!e.sub,
           goals: String(e.goals ?? 0),
           assists: String(e.assists ?? 0),
-          yellow: String(e.yellow ?? 0),
+          MVP: String(e.MVP ?? 0),
           red: String(e.red ?? 0)
         };
       });
@@ -264,7 +264,7 @@ Page({
             sub: !!r.sub,
             goals: num(r.goals),
             assists: num(r.assists),
-            yellow: num(r.yellow),
+            MVP: num(r.MVP),
             red: num(r.red)
           }));
   

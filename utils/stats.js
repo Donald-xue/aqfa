@@ -16,7 +16,7 @@ function computePlayerBoard() {
         teamId: e.teamId,
         goals: 0,
         assists: 0,
-        yellow: 0,
+        MVP: 0,
         red: 0,
         starter: 0,
         sub: 0,
@@ -28,7 +28,7 @@ function computePlayerBoard() {
 
       old.goals += Number(e.goals || 0);
       old.assists += Number(e.assists || 0);
-      old.yellow += Number(e.yellow || 0);
+      old.MVP += Number(e.MVP || 0);
       old.red += Number(e.red || 0);
 
       if (e.starter) old.starter += 1;

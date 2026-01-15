@@ -50,11 +50,11 @@
           <input type="number" value="{{item.assists}}" data-side="home" data-idx="{{index}}" data-field="assists" bindinput="updatePlayerNumber" class="nInput"/>
         </view>
         <view class="n">
-          <text>Y</text>
-          <input type="number" value="{{item.yellow}}" data-side="home" data-idx="{{index}}" data-field="yellow" bindinput="updatePlayerNumber" class="nInput"/>
+          <text>MVP</text>
+          <input type="number" value="{{item.MVP}}" data-side="home" data-idx="{{index}}" data-field="MVP" bindinput="updatePlayerNumber" class="nInput"/>
         </view>
         <view class="n">
-          <text>R</text>
+          <text>RC</text>
           <input type="number" value="{{item.red}}" data-side="home" data-idx="{{index}}" data-field="red" bindinput="updatePlayerNumber" class="nInput"/>
         </view>
       </view>
@@ -98,11 +98,11 @@
           <input type="number" value="{{item.assists}}" data-side="away" data-idx="{{index}}" data-field="assists" bindinput="updatePlayerNumber" class="nInput"/>
         </view>
         <view class="n">
-          <text>Y</text>
-          <input type="number" value="{{item.yellow}}" data-side="away" data-idx="{{index}}" data-field="yellow" bindinput="updatePlayerNumber" class="nInput"/>
+          <text>MVP</text>
+          <input type="number" value="{{item.MVP}}" data-side="away" data-idx="{{index}}" data-field="MVP" bindinput="updatePlayerNumber" class="nInput"/>
         </view>
         <view class="n">
-          <text>R</text>
+          <text>RC</text>
           <input type="number" value="{{item.red}}" data-side="away" data-idx="{{index}}" data-field="red" bindinput="updatePlayerNumber" class="nInput"/>
         </view>
       </view>
