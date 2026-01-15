@@ -1,0 +1,31 @@
+.wrap { padding: 24rpx; }
+.header { margin-bottom: 12rpx; }
+.title { font-size: 40rpx; font-weight: 700; }
+
+.filter { display:flex; align-items:center; gap: 12rpx; margin-bottom: 16rpx; }
+.label { color:#555; }
+.picker { flex:1; padding: 16rpx; border: 1px solid #eee; border-radius: 12rpx; background:#fafafa; }
+
+.dateBlock { margin-bottom: 16rpx; }
+.dateTitle { font-size: 32rpx; font-weight: 700; margin-bottom: 8rpx; }
+
+.matchRow {
+  display:flex;
+  justify-content: space-between;
+  gap: 12rpx;
+  background:#fff;
+  padding: 16rpx;
+  border-radius: 14rpx;
+  box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.05);
+  margin-bottom: 10rpx;
+}
+
+.left { flex: 1; min-width: 0; display:flex; flex-direction: column; gap: 6rpx; }
+.time { color:#666; }
+.teams { font-weight: 700; }
+.meta { color:#888; font-size: 24rpx; }
+
+.right { display:flex; align-items:center; }
+.score { font-size: 32rpx; font-weight: 800; }
+.pending { color:#999; }
+.empty { color:#777; padding: 16rpx 0; }

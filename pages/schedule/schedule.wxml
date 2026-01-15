@@ -1,0 +1,44 @@
+<view class="wrap">
+  <view class="header">
+    <text class="title">赛程</text>
+  </view>
+
+  <view class="filter">
+    <text class="label">队伍</text>
+    <picker mode="selector" range="{{teamNames}}" value="{{teamIndex}}" bindchange="onTeamChange">
+      <view class="picker">{{teamNames[teamIndex]}}</view>
+    </picker>
+  </view>
+  
+  <block wx:for="{{groups}}" wx:key="date">
+    <view class="dateBlock">
+      <view class="dateTitle">{{item.date}}</view>
+
+      <block wx:for="{{item.matches}}" wx:key="id" wx:for-item="m">
+        <view class="matchRow">
+          <view class="left">
+            <text class="time">{{m.time}}</text>
+            <text class="teams">{{m.home}} vs {{m.away}}</text>
+            <text class="meta">
+              <text wx:if="{{m.venue}}">{{m.venue}} </text>
+              <text wx:if="{{m.pitch}}">场地 {{m.pitch}}</text>
+            </text>
+          </view>
+
+          <button size="mini" data-id="{{m.id}}" bindtap="goEdit">
+            {{m.homeScore===null ? '输入比赛结果' : '编辑'}}
+          </button>
+
+          <view class="right">
+            <text wx:if="{{m.homeScore !== null}}" class="score">
+              {{m.homeScore}} - {{m.awayScore}}
+            </text>
+            <text wx:else class="pending">TBD</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </block>
+
+  <view wx:if="{{groups.length===0}}" class="empty">No schedule data.</view>
+</view>

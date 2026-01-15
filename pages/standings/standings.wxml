@@ -1,0 +1,57 @@
+<view class="wrap">
+  <view class="header">
+    <text class="title">积分榜</text>
+    <view class="btns">
+      <button size="mini" type="warn" bindtap="resetAll">重置</button>
+      <button size="mini" bindtap="goPlayers">球员</button>
+      <button size="mini" bindtap="goBoard">榜单</button>
+      <button size="mini" bindtap="goSchedule">赛程</button>
+    </view>
+  </view>
+
+  <view class="table">
+    <view class="row head">
+      <text class="c rank">排名</text>
+      <text class="c team">球队</text>
+      <text class="c">场次</text>
+      <text class="c">胜</text>
+      <text class="c">平</text>
+      <text class="c">负</text>
+      <text class="c">进球</text>
+      <text class="c">失球</text>
+      <text class="c">净胜球</text>
+      <text class="c pts">积分</text>
+    </view>
+
+    <block wx:for="{{table}}" wx:key="id">
+      <view class="row">
+        <text class="c rank">{{item.rank}}</text>
+        <text class="c team">{{item.name}}</text>
+        <text class="c">{{item.played}}</text>
+        <text class="c">{{item.wins}}</text>
+        <text class="c">{{item.draws}}</text>
+        <text class="c">{{item.losses}}</text>
+        <text class="c">{{item.gf}}</text>
+        <text class="c">{{item.ga}}</text>
+        <text class="c">{{item.gd}}</text>
+        <text class="c pts">{{item.points}}</text>
+      </view>
+    </block>
+  </view>
+
+  <view class="matches">
+    <view class="subTitle">比赛记录</view>
+    <block wx:for="{{matches}}" wx:key="id">
+    <view class="matchItem">
+      <view class="matchLeft">
+        <text>{{item.homeName}} {{item.homeGoals}} : {{item.awayGoals}} {{item.awayName}}</text>
+        <text class="time">{{item.time}}</text>
+      </view>
+
+      <button size="mini" data-id="{{item.id}}" bindtap="editMatch">编辑</button>
+    </view>
+  </block>
+    <view wx:if="{{matches.length === 0}}" class="empty">No matches yet.</view>
+  </view>
+</view>
+  

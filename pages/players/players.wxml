@@ -1,0 +1,38 @@
+<view class="wrap">
+  <view class="card">
+    <view class="title">球员登记</view>
+
+    <view class="field">
+      <text class="label">选择所在队伍</text>
+  
+      <picker
+        mode="selector"
+        range="{{teamNames}}"
+        value="{{teamIndex}}"
+        bindchange="onTeamChange"
+      >
+        <view class="picker">
+          {{teamNames[teamIndex]}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <text class="label">添加球员</text>
+      <view class="row">
+        <input class="input" placeholder="球员名" value="{{newName}}" bindinput="onNewName"/>
+        <button size="mini" type="primary" bindtap="addOne">Add</button>
+      </view>
+    </view>
+
+    <view class="subTitle">球员列表</view>
+    <block wx:for="{{players}}" wx:key="id">
+      <view class="playerRow">
+        <text>{{item.name}}</text>
+        <button size="mini" type="warn" data-id="{{item.id}}" bindtap="removeOne">删除球员</button>
+      </view>
+    </block>
+
+    <view wx:if="{{players.length===0}}" class="empty">列表中无球员。</view>
+  </view>
+</view>

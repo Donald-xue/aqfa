@@ -1,0 +1,132 @@
+<view class="card" style="margin-top:16rpx;">
+
+  <view class="card">
+    <view class="title">添加比赛结果</view>
+    
+    <view class="field scoreRow">
+      <view class="scoreBox">
+        <text class="label">主队得分</text>
+        <input type="number" value="{{homeGoals}}" bindinput="onHomeGoals" class="input"/>
+      </view>
+      <view class="scoreBox">
+        <text class="label">客队得分</text>
+        <input type="number" value="{{awayGoals}}" bindinput="onAwayGoals" class="input"/>
+      </view>
+    </view>
+  </view>
+
+  <view class="title">主队 球员</view>
+  <view wx:if="{{homePlayers.length===0}}" class="empty">
+    No players for this team. Please add in Players page.
+  </view>
+
+  <block wx:for="{{homePlayers}}" wx:key="playerId">
+    <view class="pRow">
+      <checkbox-group data-side="home" data-idx="{{index}}" data-field="selected" bindchange="updatePlayerField">
+        <label class="checkLabel">
+          <checkbox value="1" checked="{{item.selected}}" />
+          <text class="pName">{{item.playerName}}</text>
+        </label>
+      </checkbox-group>
+
+      <view class="flags">
+        <label class="flag">
+          <switch checked="{{item.starter}}" data-side="home" data-idx="{{index}}" data-field="starter" bindchange="updatePlayerField" />
+          <text>Starter</text>
+        </label>
+        <label class="flag">
+          <switch checked="{{item.sub}}" data-side="home" data-idx="{{index}}" data-field="sub" bindchange="updatePlayerField" />
+          <text>Sub</text>
+        </label>
+      </view>
+
+      <view class="nums">
+        <view class="n">
+          <text>G</text>
+          <input type="number" value="{{item.goals}}" data-side="home" data-idx="{{index}}" data-field="goals" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+        <view class="n">
+          <text>A</text>
+          <input type="number" value="{{item.assists}}" data-side="home" data-idx="{{index}}" data-field="assists" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+        <view class="n">
+          <text>Y</text>
+          <input type="number" value="{{item.yellow}}" data-side="home" data-idx="{{index}}" data-field="yellow" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+        <view class="n">
+          <text>R</text>
+          <input type="number" value="{{item.red}}" data-side="home" data-idx="{{index}}" data-field="red" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>
+
+<view class="card" style="margin-top:16rpx;">
+  <view class="title">客队球员</view>
+  <view wx:if="{{awayPlayers.length===0}}" class="empty">
+    No players for this team. Please add in Players page.
+  </view>
+
+  <block wx:for="{{awayPlayers}}" wx:key="playerId">
+    <view class="pRow">
+      <checkbox-group data-side="away" data-idx="{{index}}" data-field="selected" bindchange="updatePlayerField">
+        <label class="checkLabel">
+          <checkbox value="1" checked="{{item.selected}}" />
+          <text class="pName">{{item.playerName}}</text>
+        </label>
+      </checkbox-group>
+
+      <view class="flags">
+        <label class="flag">
+          <switch checked="{{item.starter}}" data-side="away" data-idx="{{index}}" data-field="starter" bindchange="updatePlayerField" />
+          <text>Starter</text>
+        </label>
+        <label class="flag">
+          <switch checked="{{item.sub}}" data-side="away" data-idx="{{index}}" data-field="sub" bindchange="updatePlayerField" />
+          <text>Sub</text>
+        </label>
+      </view>
+
+      <view class="nums">
+        <view class="n">
+          <text>G</text>
+          <input type="number" value="{{item.goals}}" data-side="away" data-idx="{{index}}" data-field="goals" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+        <view class="n">
+          <text>A</text>
+          <input type="number" value="{{item.assists}}" data-side="away" data-idx="{{index}}" data-field="assists" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+        <view class="n">
+          <text>Y</text>
+          <input type="number" value="{{item.yellow}}" data-side="away" data-idx="{{index}}" data-field="yellow" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+        <view class="n">
+          <text>R</text>
+          <input type="number" value="{{item.red}}" data-side="away" data-idx="{{index}}" data-field="red" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="field">
+    <text class="label">比赛日期</text>
+    <picker mode="date" value="{{matchDate}}" bindchange="onDateChange">
+      <view class="picker">{{matchDate}}</view>
+    </picker>
+  </view>
+
+  <view class="field">
+    <text class="label">比赛时间</text>
+    <picker mode="time" value="{{matchTime}}" bindchange="onTimeChange">
+      <view class="picker">{{matchTime}}</view>
+    </picker>
+  </view>
+
+  <button type="warn" bindtap="clearResult">清除比赛数据</button>
+
+  <view style="margin-top:16rpx;">
+  <button type="primary" bindtap="saveMatch">保存</button>
+  </view>
+
+</view>

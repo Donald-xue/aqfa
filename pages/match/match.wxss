@@ -1,0 +1,30 @@
+/* pages/match/match.wxss */
+.wrap { padding: 24rpx; }
+.card { background:#fff; border-radius: 16rpx; padding: 20rpx; box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.06); }
+.title { font-size: 36rpx; font-weight: 700; margin-bottom: 16rpx; }
+
+.field { margin-bottom: 16rpx; }
+.label { display:block; color:#555; margin-bottom: 8rpx; }
+.picker { padding: 16rpx; border: 1px solid #eee; border-radius: 12rpx; background:#fafafa; }
+
+.scoreRow { display:flex; gap: 16rpx; }
+.scoreBox { flex: 1; }
+.input { padding: 16rpx; border: 1px solid #eee; border-radius: 12rpx; background:#fff; }
+
+.empty { color:#777; padding: 12rpx 0; }
+
+.pRow {
+  padding: 12rpx 0;
+  border-bottom: 1px solid #f3f3f3;
+}
+.pRow:last-child { border-bottom: none; }
+
+.checkLabel { display:flex; align-items:center; gap: 12rpx; }
+.pName { font-weight: 600; }
+
+.flags { display:flex; gap: 18rpx; margin-top: 8rpx; }
+.flag { display:flex; align-items:center; gap: 10rpx; color:#555; }
+
+.nums { display:flex; gap: 12rpx; margin-top: 10rpx; flex-wrap: wrap; }
+.n { display:flex; align-items:center; gap: 8rpx; }
+.nInput { width: 90rpx; padding: 10rpx; border: 1px solid #eee; border-radius: 10rpx; }

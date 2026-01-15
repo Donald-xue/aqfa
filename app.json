@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "pages/standings/standings",
+    "pages/match/match",
+    "pages/players/players",
+    "pages/leaderboard/leaderboard",
+    "pages/schedule/schedule"
+  ],
+  "window": {
+    "navigationBarTitleText": "水群超级联赛",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundTextStyle": "light"
+  }
+}
+

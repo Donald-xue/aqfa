@@ -1,0 +1,46 @@
+<!--pages/leaderboard/leaderboard.wxml-->
+<view class="wrap">
+  <view class="header">
+    <text class="title">榜单</text>
+  </view>
+
+  <view class="tabs">
+    <view class="tab {{tab==='scorers'?'active':''}}" data-tab="scorers" bindtap="switchTab">射手榜</view>
+    <view class="tab {{tab==='assisters'?'active':''}}" data-tab="assisters" bindtap="switchTab">助攻榜</view>
+  </view>
+
+  <!-- 表头 -->
+  <view class="row head">
+    <text class="c rank">排名</text>
+    <text class="c name">球员</text>
+    <text class="c team">队伍</text>
+    <text class="c num">{{tab==='scorers'?'进球':'助攻'}}</text>
+    <text class="c num">{{tab==='scorers'?'助攻':'进球'}}</text>
+  </view>
+
+  <block wx:if="{{tab==='scorers'}}">
+    <block wx:for="{{scorers}}" wx:key="playerId">
+      <view class="row">
+        <text class="c rank">{{index+1}}</text>
+        <text class="c name">{{item.playerName}}</text>
+        <text class="c team">{{teamNameById[item.teamId] || item.teamId}}</text>
+        <text class="c num">{{item.goals}}</text>
+        <text class="c num">{{item.assists}}</text>
+      </view>
+    </block>
+    <view wx:if="{{scorers.length===0}}" class="empty">No data yet.</view>
+  </block>
+
+  <block wx:if="{{tab==='assisters'}}">
+    <block wx:for="{{assisters}}" wx:key="playerId">
+      <view class="row">
+        <text class="c rank">{{index+1}}</text>
+        <text class="c name">{{item.playerName}}</text>
+        <text class="c team">{{teamNameById[item.teamId] || item.teamId}}</text>
+        <text class="c num">{{item.assists}}</text>
+        <text class="c num">{{item.goals}}</text>
+      </view>
+    </block>
+    <view wx:if="{{assisters.length===0}}" class="empty">No data yet.</view>
+  </block>
+</view>

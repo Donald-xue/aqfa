@@ -1,0 +1,16 @@
+.wrap { padding: 24rpx; }
+.header { margin-bottom: 12rpx; }
+.title { font-size: 40rpx; font-weight: 700; }
+
+.tabs { display:flex; gap: 12rpx; margin-bottom: 12rpx; }
+.tab { flex:1; text-align:center; padding: 14rpx 0; border-radius: 14rpx; background:#f2f3f5; }
+.active { background:#111; color:#fff; }
+
+.row { display:flex; padding: 16rpx 12rpx; border-bottom: 1px solid #f0f0f0; background:#fff; }
+.row.head { background:#fafafa; font-weight: 600; border-radius: 14rpx; margin-bottom: 8rpx; }
+.c { text-align:center; }
+.rank { width: 70rpx; }
+.name { flex: 1; text-align:left; }
+.team { width: 180rpx; }
+.num { width: 90rpx; font-weight: 700; }
+.empty { color:#777; padding: 16rpx 0; }
