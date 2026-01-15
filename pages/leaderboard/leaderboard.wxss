@@ -14,3 +14,18 @@
 .team { width: 180rpx; }
 .num { width: 90rpx; font-weight: 700; }
 .empty { color:#777; padding: 16rpx 0; }
+.filter {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+}
+
+.filter-label {
+  margin-right: 8px;
+}
+
+.filter-picker {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}

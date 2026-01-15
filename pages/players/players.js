@@ -62,6 +62,15 @@ Page({
     if (!team) return;
 
     try {
+      const normalized = name.toLowerCase();
+      const existsLocal = (this.data.players || []).some(p =>
+        String(p.name || "").trim().toLowerCase() === normalized
+      );
+      if (existsLocal) {
+        wx.showToast({ title: "Player already exists", icon: "none" });
+        return;
+      }
+
       // ✅ 继续用你原来的本地生成 playerId 规则（保证风格一致）
       const p = addPlayerLocal(team.id, name); // 返回 {id,name} :contentReference[oaicite:5]{index=5}
 

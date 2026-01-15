@@ -49,7 +49,6 @@ async function ensureCloudMatchesInitialized(teams) {
   }
 }
 async function fetchAllMatches() {
-  console.log("[fetchAllMatches] paging version used");
   const pageSize = 10; // 每页取 50（可调，太大可能慢）
   let all = [];
   let skip = 0;
@@ -71,17 +70,7 @@ async function fetchAllMatches() {
 
   return all;
 }
-/*
-// 拉取全部比赛（赛程页用）
-async function fetchAllMatches() {
-  // 注意：云数据库单次 get 有上限，数据多要分页
-  const res = await MATCHES
-    .where({ leagueId: LEAGUE_ID })
-    .orderBy("ts", "asc")
-    .get();
-  return res.data || [];
-}
-*/
+
 // 只拉已录入比分的比赛（积分榜用）
 async function fetchPlayedMatches() {
   const _ = db.command;

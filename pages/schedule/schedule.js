@@ -37,7 +37,6 @@ Page({
 
       const db = wx.cloud.database();
       const total = await db.collection("matches").where({ leagueId: "aqfa_superleague_2026" }).count();
-      console.log("cloud matches total =", total.total);
 
       // 3) 从云端拉取全部比赛（包含比分/球员）
       const list = await fetchAllMatches();

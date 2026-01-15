@@ -4,6 +4,16 @@
     <text class="title">榜单</text>
   </view>
 
+  <!-- ✅ 队伍筛选 -->
+  <view class="filter">
+    <text class="filter-label">队伍：</text>
+    <picker mode="selector" range="{{teamNames}}" value="{{teamIndex}}" bindchange="onTeamFilterChange">
+      <view class="filter-picker">
+        <text>{{teamNames[teamIndex]}}</text>
+      </view>
+    </picker>
+  </view>
+  
   <view class="tabs">
     <view class="tab {{tab==='scorers'?'active':''}}" data-tab="scorers" bindtap="switchTab">射手榜</view>
     <view class="tab {{tab==='assisters'?'active':''}}" data-tab="assisters" bindtap="switchTab">助攻榜</view>
