@@ -18,7 +18,7 @@
         <view class="matchRow">
           <view class="left">
             <text class="time">{{m.time}}</text>
-            <text class="teams">{{m.home}} vs {{m.away}}</text>
+            <text class="teams">{{m.home}} <text wx:if="{{m.homeScore !== null}}" class="score"> {{m.homeScore}} - {{m.awayScore}}</text><text wx:else class="pending">TBD</text> {{m.away}}</text>
             <text class="meta">
               <text wx:if="{{m.venue}}">{{m.venue}} </text>
               <text wx:if="{{m.pitch}}">场地 {{m.pitch}}</text>
@@ -28,13 +28,6 @@
           <button size="mini" data-id="{{m.id}}" bindtap="goEdit">
             {{m.homeScore===null ? '输入比赛结果' : '编辑'}}
           </button>
-
-          <view class="right">
-            <text wx:if="{{m.homeScore !== null}}" class="score">
-              {{m.homeScore}} - {{m.awayScore}}
-            </text>
-            <text wx:else class="pending">TBD</text>
-          </view>
         </view>
       </block>
     </view>

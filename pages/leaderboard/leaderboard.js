@@ -93,9 +93,9 @@ function computeBoardsFromCloud(matches) {
     .filter(x => x.MVP > 0)
     .sort((a, b) => {
       if (b.MVP !== a.MVP) return b.MVP - a.MVP;
+      if (b.apps !== a.apps) return a.apps - b.apps;
       if (b.goals !== a.goals) return b.goals - a.goals;
       if (b.assists !== a.assists) return b.assists - a.assists;
-      if (b.apps !== a.apps) return a.apps - b.apps;
       return (a.playerName || "").localeCompare(b.playerName || "");
     })
     .map((x, i) => ({ ...x, rank: i + 1 }));
@@ -199,39 +199,3 @@ Page({
     this.setData({ tab: e.currentTarget.dataset.tab });
   }
 });
-
-
-/*
-Page({
-  data: {
-    tab: "scorers", // scorers | assisters
-    scorers: [],
-    assisters: [],
-    mvpBoard: [],
-    redBoard: [],
-    teamNameById: {}
-  },
-
-  async onShow() {
-    try {
-      const { teams } = loadLeague();
-      const teamNameById = buildTeamNameById(teams);
-
-      // 确保云端初始化（只会导入一次）
-      await ensureCloudMatchesInitialized(teams);
-
-      // 从云端获取全部比赛
-      const matches = await fetchAllMatches();
-
-      const { scorers, assisters, mvpBoard, redBoard } = computeBoardsFromCloud(matches);
-      this.setData({ scorers, assisters, mvpBoard, redBoard, teamNameById });
-    } catch (err) {
-      console.error("playerBoard onShow error:", err);
-      wx.showToast({ title: "Load failed", icon: "none" });
-    }
-  },
-
-  switchTab(e) {
-    this.setData({ tab: e.currentTarget.dataset.tab });
-  }
-});*/

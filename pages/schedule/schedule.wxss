@@ -29,3 +29,13 @@
 .score { font-size: 32rpx; font-weight: 800; }
 .pending { color:#999; }
 .empty { color:#777; padding: 16rpx 0; }
+
+.matchRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left {
+  flex: 1;
+}

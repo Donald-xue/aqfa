@@ -21,7 +21,7 @@
       <text class="label">添加球员</text>
       <view class="row">
         <input class="input" placeholder="球员名" value="{{newName}}" bindinput="onNewName"/>
-        <button size="mini" type="primary" bindtap="addOne">Add</button>
+        <button size="mini" type="primary" bindtap="addOne">添加球员</button>
       </view>
     </view>
 
