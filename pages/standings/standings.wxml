@@ -1,10 +1,11 @@
 <view class="wrap">
   <view class="header">
-    <text class="title">积分榜</text>
+    <text class="title">联赛积分榜</text>
     <view class="btns">
       <button size="mini" bindtap="goPlayers">球员</button>
       <button size="mini" bindtap="goBoard">榜单</button>
       <button size="mini" bindtap="goSchedule">赛程</button>
+      <button size="mini" bindtap="goCup">杯赛</button>
     </view>
   </view>
 

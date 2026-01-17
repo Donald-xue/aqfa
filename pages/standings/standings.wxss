@@ -1,6 +1,6 @@
 .wrap { padding: 24rpx; }
 .header { display:flex; justify-content: space-between; align-items:center; margin-bottom: 16rpx; }
-.title { font-size: 40rpx; font-weight: 700; }
+.title { font-size: 40rpx; font-weight: 700; width: 300rpx;}
 .btns button { margin-left: 12rpx; }
 
 .table { background:#fff; border-radius: 16rpx; overflow:hidden; box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.06); }

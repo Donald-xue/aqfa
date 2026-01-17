@@ -1,0 +1,161 @@
+.page { background:#f6f7fb; min-height:100vh; padding-bottom: 24rpx; }
+
+.nav { padding: 24rpx 24rpx 12rpx; background:#fff; }
+.navTitle { font-size: 34rpx; font-weight: 600; }
+
+.leagueTabs { background:#fff; padding: 0 12rpx 12rpx; }
+.leagueTabsInner { display:flex; gap: 18rpx; padding: 0 12rpx; }
+.leagueTab { padding: 14rpx 10rpx; color:#666; font-size: 30rpx; position:relative; white-space:nowrap; }
+.leagueTab.on { color:#111; font-weight:600; }
+.leagueTab.on::after {
+  content:""; position:absolute; left:0; right:0; bottom:0;
+  height:6rpx; border-radius:6rpx; background:#e63b2e;
+}
+
+.subBar { background:#fff; padding: 12rpx 24rpx 18rpx; border-top: 1px solid #f0f0f0; }
+.seasonPicker { display:inline-flex; align-items:center; gap: 10rpx; padding: 10rpx 16rpx; background:#f4f5f7; border-radius: 12rpx; }
+.caret { color:#888; font-size: 22rpx; }
+
+.subTabs { margin-top: 14rpx; display:flex; gap: 18rpx; }
+.subTab { padding: 10rpx 16rpx; border-radius: 999rpx; background:#f4f5f7; color:#666; font-size: 26rpx; }
+.subTab.on { background:#fff; color:#111; border: 1px solid #eaeaea; }
+
+.card { margin: 18rpx 18rpx 0; background:#fff; border-radius: 18rpx; padding: 18rpx; }
+.cardTitle { font-size: 30rpx; font-weight: 600; margin-bottom: 14rpx; }
+
+.bracket { display:flex; gap: 18rpx; overflow-x: auto; }
+.round { min-width: 240rpx; }
+.roundName { font-size: 24rpx; color:#888; margin-bottom: 10rpx; }
+.matchCol { display:flex; flex-direction:column; gap: 16rpx; }
+.matchBox {
+  padding: 14rpx 14rpx 10rpx;
+  background:#fafafa;
+  border: 1px solid #efefef;
+  border-radius: 16rpx;
+}
+.row { display:flex; justify-content: space-between; align-items:center; }
+.team { font-size: 26rpx; color:#111; }
+.score { font-size: 26rpx; color:#111; }
+.meta { margin-top: 8rpx; font-size: 22rpx; color:#999; }
+
+.connector { height: 24rpx; border-left: 2rpx solid #eee; margin-left: 14rpx; }
+
+.table { border-top: 1px solid #f0f0f0; }
+.tr { display:flex; align-items:center; padding: 14rpx 0; border-bottom: 1px solid #f5f5f5; }
+.th { color:#888; font-size: 22rpx; }
+.td { font-size: 24rpx; color:#111; }
+.rank { width: 60rpx; text-align:center; }
+.team { flex: 1; }
+.small { width: 150rpx; text-align:center; color:#555; }
+.pts { width: 90rpx; text-align:right; font-weight:600; }
+
+.promote { background: #fff6f6; }
+
+/* 卡片 */
+.koCard{
+  margin: 18rpx;
+  padding: 18rpx;
+  background: #fff;
+  border-radius: 18rpx;
+}
+.koTitle{
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 14rpx;
+}
+
+/* 画布容器 */
+.koBracket{
+  position: relative;
+  padding: 10rpx 0 24rpx;
+}
+
+/* 行布局 */
+.koRow{
+  display: flex;
+  padding: 0 8rpx;
+}
+.koRowTop,
+.koRowBottom{
+  justify-content: space-between;
+}
+.koRowCenter{
+  justify-content: center;
+  margin: 34rpx 0;
+}
+.koRowFinal{
+  justify-content: center;
+  margin: 54rpx 0;
+}
+
+/* 胶囊 */
+.koMatch{
+  background: #fff;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 999rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0,0,0,.03);
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+}
+
+.koQF{ width: 320rpx; height: 92rpx; padding: 0 24rpx; }
+.koSF{ width: 360rpx; height: 86rpx; padding: 0 24rpx; justify-content: center; gap: 22rpx; }
+.koFinal{ width: 650rpx; height: 140rpx; padding: 0 32rpx; justify-content: center; gap: 40rpx; }
+
+.koTeam{
+  display:flex;
+  align-items:center;
+  gap: 14rpx;
+  font-size: 26rpx;
+  color:#111;
+}
+.koMid{
+  font-size: 30rpx;
+  font-weight: 600;
+  color:#111;
+}
+.koMid.big{ font-size: 32rpx; }
+
+.koFinalText{
+  font-size: 36rpx;
+  font-weight: 700;
+  color:#111;
+}
+
+/* 占位徽章/盾牌（你以后换成国旗图就行） */
+.koBadge{
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 50%;
+  background: #f3f4f6;
+}
+.koIcon.koShield{
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: #f3f4f6;
+}
+.koIcon.koShield.big{
+  width: 86rpx;
+  height: 86rpx;
+}
+
+/* 连接线 */
+.koLine{ position:absolute; background:#ededed; }
+.koLine.v{ width: 2rpx; }
+.koLine.h{ height: 2rpx; }
+
+/* 下面这些是“定点坐标”，按 750rpx 宽屏幕比例设计，rpx 会自适应 */
+.v1{ left: 170rpx; top: 104rpx; height: 70rpx; }  /* QF1 下到横线 */
+.v2{ left: 580rpx; top: 104rpx; height: 70rpx; }  /* QF2 下到横线 */
+.h1{ left: 170rpx; top: 174rpx; width: 170rpx; }  /* 左上横线到中线 */
+.h2{ left: 410rpx; top: 174rpx; width: 170rpx; }  /* 右上横线到中线 */
+
+.vMidTop{ left: 375rpx; top: 174rpx; height: 120rpx; } /* 上横线到 SF1 */
+.vMidBottom{ left: 375rpx; top: 520rpx; height: 120rpx; } /* SF2 到下横线 */
+
+.v3{ left: 170rpx; top: 704rpx; height: 70rpx; }  /* QF3 上到横线 */
+.v4{ left: 580rpx; top: 704rpx; height: 70rpx; }  /* QF4 上到横线 */
+.h3{ left: 170rpx; top: 704rpx; width: 170rpx; }  /* 左下横线到中线 */
+.h4{ left: 410rpx; top: 704rpx; width: 170rpx; }  /* 右下横线到中线 */

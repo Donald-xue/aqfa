@@ -90,4 +90,8 @@ Page({
   goBoard() {
     wx.navigateTo({ url: "/pages/leaderboard/leaderboard" });
   },
+  goCup() {
+    // 如果你的杯赛页面路径是 /pages/cup/cup
+    wx.navigateTo({ url: "/pages/cup/cup" });
+  }
 });

@@ -1,0 +1,202 @@
+<view class="page">
+  <!-- 顶部标题 -->
+  <view class="nav">
+    <text class="navTitle">全部比赛</text>
+  </view>
+
+  <!-- 赛事横向 tabs -->
+  <scroll-view scroll-x class="leagueTabs" show-scrollbar="false">
+    <view class="leagueTabsInner">
+      <view
+        wx:for="{{cups}}"
+        wx:key="id"
+        class="leagueTab {{item.id===activeCupId?'on':''}}"
+        data-id="{{item.id}}"
+        bindtap="onCupTab"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 赛季 + 二级 tabs -->
+  <view class="subBar">
+    <picker mode="selector" range="{{seasonOptions}}" value="{{seasonIndex}}" bindchange="onSeasonChange">
+      <view class="seasonPicker">
+        <text>{{seasonOptions[seasonIndex]}}</text>
+        <text class="caret">▼</text>
+      </view>
+    </picker>
+
+    <view class="subTabs">
+      <view class="subTab {{subTab==='standings'?'on':''}}" data-tab="standings" bindtap="onSubTab">积分榜</view>
+      <view class="subTab {{subTab==='players'?'on':''}}" data-tab="players" bindtap="onSubTab">射手榜</view>
+      <view class="subTab {{subTab==='teams'?'on':''}}" data-tab="teams" bindtap="onSubTab">助攻榜</view>
+    </view>
+  </view>
+  
+<!-- 积分榜 -->
+  <view wx:if="{{subTab==='standings'}}">
+    <!-- 小组赛积分榜 -->
+    <view class="card" wx:for="{{groupStandings}}" wx:key="groupId" wx:for-item="group">
+      <view class="cardTitle">{{group.groupName}}</view>
+
+      <view class="table">
+        <view class="tr th">
+          <text class="td rank">#</text>
+          <text class="td team">球队</text>
+          <text class="td small">赛</text>
+          <text class="td small">胜/平/负</text>
+          <text class="td small">进/失</text>
+          <text class="td small">净胜</text>
+          <text class="td pts">积分</text>
+        </view>
+
+        <view
+          class="tr {{idx<2?'promote':''}}"
+          wx:for="{{group.rows}}"
+          wx:key="name"
+          wx:for-item="row"
+          wx:for-index="idx"
+        >
+          <text class="td rank">{{row.rank}}</text>
+          <text class="td team">{{row.name}}</text>
+          <text class="td small">{{row.played}}</text>
+          <text class="td small">{{row.wins}}/{{row.draws}}/{{row.losses}}</text>
+          <text class="td small">{{row.gf}}/{{row.ga}}</text>
+          <text class="td small">{{row.gd}}</text>
+          <text class="td pts">{{row.points}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 美观晋级图（8强） -->
+    <view class="koCard">
+      <view class="koTitle">淘汰赛对阵</view>
+
+      <view class="koBracket">
+        <!-- 顶部两场 1/4 -->
+        <view class="koRow koRowTop">
+          <view class="koMatch koQF" bindtap="goKo" data-code="QF1">
+            <view class="koTeam"><view class="koBadge"></view><text>{{knockoutMap.QF1.home}}</text></view>
+            <view class="koMid">{{knockoutMap.QF1.homeScore===null?'未赛':(knockoutMap.QF1.homeScore + ':' + knockoutMap.QF1.awayScore)}}</view>
+            <view class="koTeam"><text>{{knockoutMap.QF1.away}}</text><view class="koBadge"></view></view>
+          </view>
+
+          <view class="koMatch koQF" bindtap="goKo" data-code="QF2">
+            <view class="koTeam"><view class="koBadge"></view><text>{{knockoutMap.QF2.home}} </text></view>
+            <view class="koMid">{{knockoutMap.QF2.homeScore===null?'未赛':(knockoutMap.QF2.homeScore + ':' + knockoutMap.QF2.awayScore)}}</view>
+            <view class="koTeam"><text>{{knockoutMap.QF2.away}}</text><view class="koBadge"></view></view>
+          </view>
+        </view>
+
+        <!-- 上半区半决赛 -->
+        <view class="koRow koRowCenter">
+          <view class="koMatch koSF" bindtap="goKo" data-code="SF1">
+            <view class="koIcon koShield"></view>
+            <view class="koMid big">{{knockoutMap.SF1.homeScore===null?'未赛':(knockoutMap.SF1.homeScore + ':' + knockoutMap.SF1.awayScore)}}</view>
+            <view class="koIcon koShield"></view>
+          </view>
+        </view>
+
+        <!-- 决赛（大胶囊） -->
+        <view class="koRow koRowFinal">
+          <view class="koMatch koFinal" bindtap="goKo" data-code="F">
+            <view class="koIcon koShield big"></view>
+            <view class="koFinalText">决赛</view>
+            <view class="koIcon koShield big"></view>
+          </view>
+        </view>
+
+        <!-- 下半区半决赛 -->
+        <view class="koRow koRowCenter">
+          <view class="koMatch koSF" bindtap="goKo" data-code="SF2">
+            <view class="koIcon koShield"></view>
+            <view class="koMid big">{{knockoutMap.SF2.homeScore===null?'未赛':(knockoutMap.SF2.homeScore + ':' + knockoutMap.SF2.awayScore)}}</view>
+            <view class="koIcon koShield"></view>
+          </view>
+        </view>
+
+        <!-- 底部两场 1/4 -->
+        <view class="koRow koRowBottom">
+          <view class="koMatch koQF" bindtap="goKo" data-code="QF3">
+            <view class="koTeam"><view class="koBadge"></view><text>{{knockoutMap.QF3.home}}</text></view>
+            <view class="koMid">{{knockoutMap.QF3.homeScore===null?'未赛':(knockoutMap.QF3.homeScore + ':' + knockoutMap.QF3.awayScore)}}</view>
+            <view class="koTeam"><text>{{knockoutMap.QF3.away}}</text><view class="koBadge"></view></view>
+          </view>
+
+          <view class="koMatch koQF" bindtap="goKo" data-code="QF4">
+            <view class="koTeam"><view class="koBadge"></view><text>{{knockoutMap.QF4.home}}</text></view>
+            <view class="koMid">{{knockoutMap.QF4.homeScore===null?'未赛':(knockoutMap.QF4.homeScore + ':' + knockoutMap.QF4.awayScore)}}</view>
+            <view class="koTeam"><text>{{knockoutMap.QF4.away}}</text><view class="koBadge"></view></view>
+          </view>
+        </view>
+
+        <!-- 连接线（用绝对定位画线） -->
+        <view class="koLine v v1"></view>
+        <view class="koLine v v2"></view>
+        <view class="koLine v v3"></view>
+        <view class="koLine v v4"></view>
+
+        <view class="koLine h h1"></view>
+        <view class="koLine h h2"></view>
+        <view class="koLine h h3"></view>
+        <view class="koLine h h4"></view>
+
+        <view class="koLine v vMidTop"></view>
+        <view class="koLine v vMidBottom"></view>
+      </view>
+    </view>
+  </view>
+
+  
+  <!-- 射手榜 -->
+  <view wx:if="{{subTab==='players'}}" class="card">
+    <view class="cardTitle">射手榜</view>
+
+    <view wx:if="{{playersRank.length===0}}" class="empty">暂无球员数据</view>
+
+    <view class="table" wx:else>
+      <view class="tr th">
+        <text class="td rank">#</text>
+        <text class="td team">球员</text>
+        <text class="td small">球队</text>
+        <text class="td small">进球</text>
+        <text class="td small">助攻</text>
+      </view>
+
+      <view class="tr" wx:for="{{playersRank}}" wx:key="name" wx:for-item="p">
+        <text class="td rank">{{p.rank}}</text>
+        <text class="td team">{{p.name}}</text>
+        <text class="td small">{{p.team}}</text>
+        <text class="td small">{{p.goals}}</text>
+        <text class="td small">{{p.assists}}</text>
+      </view>
+    </view>
+  </view>
+    
+  <!-- 助攻榜 -->
+  <view wx:if="{{subTab==='teams'}}" class="card">
+    <view class="cardTitle">助攻榜</view>
+
+    <view wx:if="{{assistsRank.length===0}}" class="empty">暂无球员数据</view>
+
+    <view class="table" wx:else>
+      <view class="tr th">
+        <text class="td rank">#</text>
+        <text class="td team">球员</text>
+        <text class="td small">球队</text>
+        <text class="td small">助攻</text>
+        <text class="td small">进球</text>
+      </view>
+
+      <view class="tr" wx:for="{{assistsRank}}" wx:key="name" wx:for-item="p">
+        <text class="td rank">{{p.rank}}</text>
+        <text class="td team">{{p.name}}</text>
+        <text class="td small">{{p.team}}</text>
+        <text class="td small">{{p.assists}}</text>
+        <text class="td small">{{p.goals}}</text>
+      </view>
+    </view>
+  </view>
+</view>
