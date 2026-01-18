@@ -13,7 +13,7 @@ function defaultTeams() {
     { id: "t6", name: "拉斐尔喜悦" },
     { id: "t7", name: "南航小蜘蛛" },
     { id: "t8", name: "恶灵骑士" },
-    { id: "t9", name: "我也没意见" },
+    { id: "t9", name: "我没意见" },
     { id: "t10", name: "克里文森蓝水泉" },
     { id: "t11", name: "帅气Lee" },
     { id: "t12", name: "医药代表" }

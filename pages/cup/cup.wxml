@@ -73,7 +73,7 @@
 
     <!-- 美观晋级图（8强） -->
     <view class="koCard">
-      <view class="koTitle">淘汰赛对阵</view>
+      <view class="koTitle">实时淘汰赛对阵</view>
 
       <view class="koBracket">
         <!-- 顶部两场 1/4 -->
