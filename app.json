@@ -5,7 +5,8 @@
     "pages/players/players",
     "pages/leaderboard/leaderboard",
     "pages/schedule/schedule",
-    "pages/cup/cup"
+    "pages/cup/cup",
+    "pages/finance/finance"
   ],
   "window": {
     "navigationBarTitleText": "水群超级联赛",

@@ -5,6 +5,7 @@
       <button size="mini" bindtap="goPlayers">球员</button>
       <button size="mini" bindtap="goBoard">榜单</button>
       <button size="mini" bindtap="goSchedule">赛程</button>
+      <button size="mini" bindtap="goFinance">财政</button>
       <button size="mini" bindtap="goCup" class="btnCup" >杯赛</button>
     </view>
   </view>
