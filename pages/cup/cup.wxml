@@ -48,7 +48,7 @@
           <text class="td small">赛</text>
           <text class="td small">胜/平/负</text>
           <text class="td small">进/失</text>
-          <text class="td small">净胜</text>
+          <text class="td pts">净胜</text>
           <text class="td pts">积分</text>
         </view>
 
@@ -64,7 +64,7 @@
           <text class="td small">{{row.played}}</text>
           <text class="td small">{{row.wins}}/{{row.draws}}/{{row.losses}}</text>
           <text class="td small">{{row.gf}}/{{row.ga}}</text>
-          <text class="td small">{{row.gd}}</text>
+          <text class="td pts">{{row.gd}}</text>
           <text class="td pts">{{row.points}}</text>
         </view>
       </view>
@@ -78,73 +78,53 @@
         <!-- 顶部两场 1/4 -->
         <view class="koRow koRowTop">
           <view class="koMatch koQF" bindtap="goKo" data-code="QF1">
-            <view class="koTeam"><view class="koBadge"></view><text>{{knockoutMap.QF1.home}}</text></view>
+            <view class="koTeam"><text>{{knockoutMap.QF1.home}}</text></view>
             <view class="koMid">{{knockoutMap.QF1.homeScore===null?'未赛':(knockoutMap.QF1.homeScore + ':' + knockoutMap.QF1.awayScore)}}</view>
-            <view class="koTeam"><text>{{knockoutMap.QF1.away}}</text><view class="koBadge"></view></view>
+            <view class="koTeam"><text>{{knockoutMap.QF1.away}}</text></view>
           </view>
 
           <view class="koMatch koQF" bindtap="goKo" data-code="QF2">
-            <view class="koTeam"><view class="koBadge"></view><text>{{knockoutMap.QF2.home}} </text></view>
+            <view class="koTeam"><text>{{knockoutMap.QF2.home}} </text></view>
             <view class="koMid">{{knockoutMap.QF2.homeScore===null?'未赛':(knockoutMap.QF2.homeScore + ':' + knockoutMap.QF2.awayScore)}}</view>
-            <view class="koTeam"><text>{{knockoutMap.QF2.away}}</text><view class="koBadge"></view></view>
+            <view class="koTeam"><text>{{knockoutMap.QF2.away}}</text></view>
           </view>
         </view>
 
         <!-- 上半区半决赛 -->
         <view class="koRow koRowCenter">
           <view class="koMatch koSF" bindtap="goKo" data-code="SF1">
-            <view class="koIcon koShield"></view>
             <view class="koMid big">{{knockoutMap.SF1.homeScore===null?'未赛':(knockoutMap.SF1.homeScore + ':' + knockoutMap.SF1.awayScore)}}</view>
-            <view class="koIcon koShield"></view>
           </view>
         </view>
 
         <!-- 决赛（大胶囊） -->
         <view class="koRow koRowFinal">
           <view class="koMatch koFinal" bindtap="goKo" data-code="F">
-            <view class="koIcon koShield big"></view>
             <view class="koFinalText">决赛</view>
-            <view class="koIcon koShield big"></view>
           </view>
         </view>
 
         <!-- 下半区半决赛 -->
         <view class="koRow koRowCenter">
           <view class="koMatch koSF" bindtap="goKo" data-code="SF2">
-            <view class="koIcon koShield"></view>
             <view class="koMid big">{{knockoutMap.SF2.homeScore===null?'未赛':(knockoutMap.SF2.homeScore + ':' + knockoutMap.SF2.awayScore)}}</view>
-            <view class="koIcon koShield"></view>
           </view>
         </view>
 
         <!-- 底部两场 1/4 -->
         <view class="koRow koRowBottom">
           <view class="koMatch koQF" bindtap="goKo" data-code="QF3">
-            <view class="koTeam"><view class="koBadge"></view><text>{{knockoutMap.QF3.home}}</text></view>
+            <view class="koTeam"><text>{{knockoutMap.QF3.home}}</text></view>
             <view class="koMid">{{knockoutMap.QF3.homeScore===null?'未赛':(knockoutMap.QF3.homeScore + ':' + knockoutMap.QF3.awayScore)}}</view>
-            <view class="koTeam"><text>{{knockoutMap.QF3.away}}</text><view class="koBadge"></view></view>
+            <view class="koTeam"><text>{{knockoutMap.QF3.away}}</text></view>
           </view>
 
           <view class="koMatch koQF" bindtap="goKo" data-code="QF4">
-            <view class="koTeam"><view class="koBadge"></view><text>{{knockoutMap.QF4.home}}</text></view>
+            <view class="koTeam"><text>{{knockoutMap.QF4.home}}</text></view>
             <view class="koMid">{{knockoutMap.QF4.homeScore===null?'未赛':(knockoutMap.QF4.homeScore + ':' + knockoutMap.QF4.awayScore)}}</view>
-            <view class="koTeam"><text>{{knockoutMap.QF4.away}}</text><view class="koBadge"></view></view>
+            <view class="koTeam"><text>{{knockoutMap.QF4.away}}</text></view>
           </view>
         </view>
-
-        <!-- 连接线（用绝对定位画线） -->
-        <view class="koLine v v1"></view>
-        <view class="koLine v v2"></view>
-        <view class="koLine v v3"></view>
-        <view class="koLine v v4"></view>
-
-        <view class="koLine h h1"></view>
-        <view class="koLine h h2"></view>
-        <view class="koLine h h3"></view>
-        <view class="koLine h h4"></view>
-
-        <view class="koLine v vMidTop"></view>
-        <view class="koLine v vMidBottom"></view>
       </view>
     </view>
   </view>

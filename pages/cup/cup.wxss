@@ -34,7 +34,7 @@
   border-radius: 16rpx;
 }
 .row { display:flex; justify-content: space-between; align-items:center; }
-.team { font-size: 26rpx; color:#111; }
+.team { font-size: 26rpx; color:#111; width: 120rpx; }
 .score { font-size: 26rpx; color:#111; }
 .meta { margin-top: 8rpx; font-size: 22rpx; color:#999; }
 
@@ -46,8 +46,8 @@
 .td { font-size: 24rpx; color:#111; }
 .rank { width: 60rpx; text-align:center; }
 .team { flex: 1; }
-.small { width: 150rpx; text-align:center; color:#555; }
-.pts { width: 90rpx; text-align:right; font-weight:600; }
+.small { width: 100rpx; text-align:center; color:#555; }
+.pts { width: 80rpx; text-align:center; font-weight:600; }
 
 .promote { background: #fff6f6; }
 
@@ -77,16 +77,21 @@
 }
 .koRowTop,
 .koRowBottom{
+  height: 120rpx;          /* 92rpx 胶囊 + 上下余量 */
+  display:flex;
+  align-items:center;
   justify-content: space-between;
 }
-.koRowCenter{
-  justify-content: center;
-  margin: 34rpx 0;
-}
+.koRowCenter,
 .koRowFinal{
-  justify-content: center;
-  margin: 54rpx 0;
+  margin: 0;               /* 关键：不要用 margin 拉开 */
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
+.koRowCenter{ height: 160rpx; }
+.koRowFinal{ height: 200rpx; }
+
 
 /* 胶囊 */
 .koMatch{
@@ -140,22 +145,3 @@
   width: 86rpx;
   height: 86rpx;
 }
-
-/* 连接线 */
-.koLine{ position:absolute; background:#ededed; }
-.koLine.v{ width: 2rpx; }
-.koLine.h{ height: 2rpx; }
-
-/* 下面这些是“定点坐标”，按 750rpx 宽屏幕比例设计，rpx 会自适应 */
-.v1{ left: 170rpx; top: 104rpx; height: 70rpx; }  /* QF1 下到横线 */
-.v2{ left: 580rpx; top: 104rpx; height: 70rpx; }  /* QF2 下到横线 */
-.h1{ left: 170rpx; top: 174rpx; width: 170rpx; }  /* 左上横线到中线 */
-.h2{ left: 410rpx; top: 174rpx; width: 170rpx; }  /* 右上横线到中线 */
-
-.vMidTop{ left: 375rpx; top: 174rpx; height: 120rpx; } /* 上横线到 SF1 */
-.vMidBottom{ left: 375rpx; top: 520rpx; height: 120rpx; } /* SF2 到下横线 */
-
-.v3{ left: 170rpx; top: 704rpx; height: 70rpx; }  /* QF3 上到横线 */
-.v4{ left: 580rpx; top: 704rpx; height: 70rpx; }  /* QF4 上到横线 */
-.h3{ left: 170rpx; top: 704rpx; width: 170rpx; }  /* 左下横线到中线 */
-.h4{ left: 410rpx; top: 704rpx; width: 170rpx; }  /* 右下横线到中线 */

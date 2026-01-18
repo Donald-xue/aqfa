@@ -311,12 +311,13 @@ Page({
     this.setData({ subTab: tab });
   },
 
-/*  goKo(e) {
+  goKo(e) {
+    return;
     const code = e.currentTarget.dataset.code; // QF1/SF1/F...
     if (!code) return;
     // 你编辑页如果支持字符串 id 就直接用
     wx.navigateTo({ url: `/pages/match/match?id=${code}` });
-  },*/
+  },
 
   goMatch(e) {
     const id = e.currentTarget.dataset.id;

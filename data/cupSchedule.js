@@ -2,7 +2,7 @@
 // 4 groups, 3 teams per group, single round robin per group (3 matches each)
 
 const cupGroups = [
-  { groupId: "A", groupName: "小组A组", teams: ["A1", "A2", "A3"] },
+  { groupId: "A", groupName: "小组A组", teams: ["皇马", "巴萨", "克里文森蓝水泉"] },
   { groupId: "B", groupName: "小组B组", teams: ["B1", "B2", "B3"] },
   { groupId: "C", groupName: "小组C组", teams: ["C1", "C2", "C3"] },
   { groupId: "D", groupName: "小组D组", teams: ["D1", "D2", "D3"] },
@@ -11,11 +11,11 @@ const cupGroups = [
 // 注意：比分 null 表示未赛；你以后填真实比分即可
 const cupGroupMatches = [
   // Group A
-  { id: 1001, date: "2025-09-01", time: "18:00", home: "A1", away: "A2", homeScore: 2, awayScore: 1, playerEvents: [
-    { type: "goal", player: "lsq", team: "A1", minute: 12 },
-    { type: "assist", player: "PlayerB", team: "A1", minute: 12 },
-    { type: "assist", player: "lsq", team: "A1", minute: 12 },
-    { type: "goal", player: "PlayerC", team: "A2", minute: 55 }
+  { id: 1001, date: "2025-09-01", time: "18:00", home: "皇马", away: "巴萨", homeScore: 2, awayScore: 1, playerEvents: [
+    { type: "goal", player: "lsq", team: "皇马", minute: 12 },
+    { type: "assist", player: "PlayerB", team: "皇马", minute: 12 },
+    { type: "assist", player: "lsq", team: "皇马", minute: 12 },
+    { type: "goal", player: "PlayerC", team: "巴萨", minute: 55 }
   ], division: "Group A", cupId: "aqcup", season: "3rd" },
   { id: 1002, date: "2025-09-03", time: "18:00", home: "A1", away: "A3", homeScore: null, awayScore: null, playerEvents: [], division: "Group A", cupId: "aqcup", season: "3rd" },
   { id: 1003, date: "2025-09-05", time: "18:00", home: "A2", away: "A3", homeScore: null, awayScore: null, playerEvents: [], division: "Group A", cupId: "aqcup", season: "3rd" },
