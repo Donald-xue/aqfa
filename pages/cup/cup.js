@@ -3,6 +3,48 @@ const MATCH_KEY = "match_list";
 
 const { cupGroups, cupGroupMatches } = require("../../data/cupSchedule");
 
+function buildScheduleFromCupSchedule(cupGroupMatches, cupGroups, activeCupId, seasonText) {
+  // 只取当前杯赛 + 当前赛季的小组赛（Group A~D）
+  const matches = cupGroupMatches
+    .filter(m =>
+      m.cupId === activeCupId &&
+      m.season === seasonText &&
+      /^Group\s[A-D]$/.test(m.division)
+    )
+    .slice()
+    .sort((a, b) => (`${a.date} ${a.time}`).localeCompare(`${b.date} ${b.time}`));
+
+  // division => 中文组名（小组A组...）
+  const groupNameMap = {};
+  (cupGroups || []).forEach(g => {
+    groupNameMap[`Group ${g.groupId}`] = g.groupName || `Group ${g.groupId}`;
+  });
+
+  // 按 division 分组
+  const map = {};
+  for (const m of matches) {
+    const key = m.division || "Other";
+    if (!map[key]) map[key] = [];
+    map[key].push(m);
+  }
+
+  // 输出 sections（用于 WXML 渲染）
+  const order = ["Group A", "Group B", "Group C", "Group D"].filter(k => map[k]);
+  Object.keys(map).forEach(k => { if (!order.includes(k)) order.push(k); });
+
+  return order.map(division => ({
+    division,
+    title: groupNameMap[division] || division,
+    teams: (() => {
+      // 找到该组的球队列表
+      const gid = division.replace("Group ", "");
+      const g = (cupGroups || []).find(x => x.groupId === gid);
+      return g && Array.isArray(g.teams) ? g.teams : [];
+    })(),
+    matches: map[division]
+  }));
+}
+
 function buildAssistsRankFromCupSchedule(cupGroupMatches, activeCupId, seasonText) {
   const matches = cupGroupMatches.filter(m =>
     m.cupId === activeCupId && m.season === seasonText
@@ -251,7 +293,8 @@ Page({
     groupStandings: [], // 你自己算积分榜后塞进来
     knockoutMap: {},
     playersRank: [],
-    assistsRank: []
+    assistsRank: [],
+    scheduleSections: [],
   },
 
 /*  async onShow() {
@@ -286,12 +329,20 @@ Page({
       });
     });
 
+    const scheduleSections = buildScheduleFromCupSchedule(
+      cupGroupMatches,
+      cupGroups,
+      this.data.activeCupId,
+      seasonText
+    );
+
     this.setData({
       groupStandings: gs,
       knockoutRounds: koRounds,
       knockoutMap,
       playersRank,
       assistsRank,
+      scheduleSections
     });
   },
 

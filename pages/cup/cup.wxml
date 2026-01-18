@@ -32,6 +32,7 @@
       <view class="subTab {{subTab==='standings'?'on':''}}" data-tab="standings" bindtap="onSubTab">积分榜</view>
       <view class="subTab {{subTab==='players'?'on':''}}" data-tab="players" bindtap="onSubTab">射手榜</view>
       <view class="subTab {{subTab==='teams'?'on':''}}" data-tab="teams" bindtap="onSubTab">助攻榜</view>
+      <view class="subTab {{subTab==='schedule'?'on':''}}" data-tab="schedule" bindtap="onSubTab">赛程</view>
     </view>
   </view>
   
@@ -154,7 +155,47 @@
       </view>
     </view>
   </view>
-    
+
+    <!-- 赛程 -->
+<view wx:if="{{subTab==='schedule'}}">
+  <view class="card" wx:for="{{scheduleSections}}" wx:key="division" wx:for-item="sec">
+    <view class="cardTitle">{{sec.title}}</view>
+
+    <!-- 组内球队标签（可选） -->
+    <view class="teamsWrap" wx:if="{{sec.teams && sec.teams.length}}">
+      <text class="teamTag" wx:for="{{sec.teams}}" wx:key="*this">{{item}}</text>
+    </view>
+
+    <view class="matchList">
+      <view class="matchItem" wx:for="{{sec.matches}}" wx:key="id" wx:for-item="m">
+        <view class="matchLeft">
+          <view class="matchTime">
+            <text class="date">{{m.date}}</text>
+            <text class="time">{{m.time}}</text>
+          </view>
+
+          <view class="teamRow">
+            <text class="teamName">{{m.home}}</text>
+            <text class="vs">vs</text>
+            <text class="teamName">{{m.away}}</text>
+          </view>
+        </view>
+
+        <view class="matchRight">
+          <text class="score">
+            {{m.homeScore===null?'未赛':(m.homeScore + ':' + m.awayScore)}}
+          </text>
+        </view>
+      </view>
+
+      <view class="empty" wx:if="{{!sec.matches || sec.matches.length===0}}">暂无赛程</view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!scheduleSections || scheduleSections.length===0}}">暂无赛程数据</view>
+</view>
+
+
   <!-- 助攻榜 -->
   <view wx:if="{{subTab==='teams'}}" class="card">
     <view class="cardTitle">助攻榜</view>
