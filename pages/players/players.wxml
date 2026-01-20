@@ -22,6 +22,9 @@
       <view class="row">
         <input class="input" placeholder="球员名" value="{{newName}}" bindinput="onNewName"/>
         <input class="input" placeholder="加点数" type="number" value="{{newLevel}}" bindinput="onNewLevel" />
+        <picker mode="selector" range="{{starOptions}}" value="{{starIndex}}" bindchange="onStarChange">
+          <view class="inputLike">星级：{{starOptions[starIndex]}} ⭐</view>
+        </picker>
         <button size="mini" type="primary" bindtap="addOne">添加球员</button>
       </view>
     </view>
@@ -29,6 +32,7 @@
     <view class="subTitle">球员列表</view>
     <view class="playerRow" wx:for="{{players}}" wx:key="_id" wx:for-item="p">
       <view class="left">
+        <text class="sub">{{p.star || 5}}⭐</text>
         <text class="name">{{p.name}} 点数：{{p.level || 0}}</text>
 
         <view class="deltaRow">

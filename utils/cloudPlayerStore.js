@@ -39,14 +39,17 @@ async function fetchPlayersByTeam(teamId) {
   return all.map(x => ({ id: x.playerId, name: x.name, level:x.level}));
 }
 
-async function addCloudPlayer(teamId, playerId, name, level) {
+async function addCloudPlayer(teamId, playerId, name, level, star) {
   if (!teamId || !playerId || !name) throw new Error("Missing teamId/playerId/name");
+
+  const st = Number(star);
+  const safeStar = Number.isFinite(st) ? Math.min(5, Math.max(1, st)) : 3;
 
   // 避免重复：同 teamId + playerId 已存在就 update name
   const exist = await PLAYERS.where({ leagueId: LEAGUE_ID, teamId, playerId }).get();
   if (exist.data && exist.data[0]) {
     await PLAYERS.doc(exist.data[0]._id).update({
-      data: { name, updatedAt: now() }
+      data: { name, updatedAt: now(), star: safeStar }
     });
     return;
   }
@@ -58,6 +61,7 @@ async function addCloudPlayer(teamId, playerId, name, level) {
       playerId,
       name,
       level,
+      star: safeStar,
       createdAt: now(),
       updatedAt: now()
     }

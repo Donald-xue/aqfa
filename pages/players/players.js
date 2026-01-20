@@ -21,7 +21,13 @@ Page({
     newName: "",
     newlevel: 0,
     levelDelta: "",
-    deltaMap: {}
+    deltaMap: {},
+    starOptions: [1,2,3,4,5],
+    starIndex: 4,
+  },
+
+  onStarChange(e) {
+    this.setData({ starIndex: Number(e.detail.value) });
   },
 
   async onShow() {
@@ -193,7 +199,8 @@ Page({
       const p = addPlayerLocal(team.id, name); // 返回 {id,name} :contentReference[oaicite:5]{index=5}
 
       // ✅ 写入云端（云端为权威）
-      await addCloudPlayer(team.id, p.id, p.name, level);
+      const star = this.data.starOptions[this.data.starIndex] || 5;
+      await addCloudPlayer(team.id, p.id, p.name, level, star);
 
       this.setData({ newName: "" });
       await this.refreshPlayers();
