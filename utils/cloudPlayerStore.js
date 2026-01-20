@@ -9,6 +9,145 @@ const { LEAGUE_ID } = require("./cloudMatchStore");
 const PLAYERS = db.collection("players");
 const COL = "players";
 const _ = db.command;
+const MATCHES = db.collection("matches");
+const COIN_DRAW = 800;
+
+const PLAYERS_COL = db.collection("players");
+const FIN_ADJ_COL = db.collection("finance_adjustments");
+
+function stepByStar(star) {
+  if (star >= 5) return 1;
+  if (star === 4) return 2;
+  if (star === 3) return 3;
+  return Infinity;
+}
+
+function calcUpgradeCost(oldLevel, delta, star) {
+  const step = stepByStar(Number(star));
+  if (!Number.isFinite(step) || step === Infinity) return 0;
+
+  const o = Number(oldLevel) || 0;
+  const d = Number(delta) || 0;
+  const n = o + d;
+
+  const charges = Math.floor(n / step) - Math.floor(o / step);
+  return Math.max(0, charges) * 100;
+}
+
+async function addPlayerLevelWithCost(teamId, playerId, delta, teamName, createdBy = "") {
+  const d = Number(delta);
+  if (!teamId || !playerId) throw new Error("Missing teamId/playerId");
+  if (!Number.isFinite(d) || d <= 0) throw new Error("delta must be > 0");
+  if (!teamName) throw new Error("Missing teamName");
+
+  // 1) 先读球员（拿到 star / level / docId）
+  const exist = await PLAYERS_COL
+    .where({ leagueId: LEAGUE_ID, teamId, playerId })
+    .limit(1)
+    .get();
+
+  const doc = exist.data && exist.data[0];
+  if (!doc) throw new Error("Player not found");
+
+  const oldLevel = Number(doc.level) || 0;
+  const star = Number(doc.star) || 5;
+  const newLevel = oldLevel + d;
+
+  // ✅ 升级合法性校验（按星级限制 newLevel 必须是倍数）
+  if (star === 4 && (newLevel % 2 !== 0)) {
+    const err = new Error("INVALID_DELTA_FOR_STAR4");
+    err.detail = { star, oldLevel, delta: d, newLevel };
+    throw err;
+  }
+  if (star === 3 && (newLevel % 3 !== 0)) {
+    const err = new Error("INVALID_DELTA_FOR_STAR3");
+    err.detail = { star, oldLevel, delta: d, newLevel };
+    throw err;
+  }
+
+  const cost = calcUpgradeCost(oldLevel, d, star);
+
+  // ✅ 余额不能为负：升级前先算当前球队余额
+  if (cost > 0) {
+    const balance = await getTeamCoins(teamName);
+    if (balance - cost < 0) {
+      const err = new Error("INSUFFICIENT_COINS");
+      err.detail = { balance, cost };
+      throw err;
+    }
+  }
+
+  // 2) 更新 level（原子自增）
+  await PLAYERS_COL.doc(doc._id).update({
+    data: { level: _.inc(d), updatedAt: now() }
+  });
+
+  // 3) 写扣费记账（负数）
+  if (cost > 0) {
+    await FIN_ADJ_COL.add({
+      data: {
+        leagueId: LEAGUE_ID,
+        teamKey: teamName, // 中文队名
+        amount: -cost,
+        note: `升级扣费：${doc.name} +${d}级（${star}⭐）`,
+        createdAt: now(),
+        createdBy: createdBy || ""
+      }
+    });
+  }
+
+  return { oldLevel, newLevel, star, cost };
+}
+
+async function fetchAll(query, pageSize = 50) {
+  let skip = 0;
+  let all = [];
+  while (true) {
+    const res = await query.skip(skip).limit(pageSize).get();
+    const batch = res.data || [];
+    all = all.concat(batch);
+    if (batch.length < pageSize) break;
+    skip += pageSize;
+  }
+  return all;
+}
+
+// 计算某支球队当前总金币（match + finance_adjustments）
+async function getTeamCoins(teamName) {
+  if (!teamName) return 0;
+
+  // 1) 比赛金币：取所有含该队的比赛（home/away），只算已完赛
+  const matches = await fetchAll(
+    MATCHES.where(_.or([{ home: teamName }, { away: teamName }])),
+    50
+  );
+
+  let coinsFromMatches = 0;
+  for (const m of matches) {
+    const hs = m.homeScore ?? null;
+    const as = m.awayScore ?? null;
+    if (hs === null || as === null) continue;
+
+    const isHome = m.home === teamName;
+    const my = isHome ? hs : as;
+    const opp = isHome ? as : hs;
+
+    if (my > opp) coinsFromMatches += COIN_WIN;
+    else if (my < opp) coinsFromMatches += COIN_LOSS;
+    else coinsFromMatches += COIN_DRAW;
+  }
+
+  // 2) 手动记账：sum(amount)
+  const adjs = await fetchAll(
+    FIN_ADJ_COL.where({ leagueId: LEAGUE_ID, teamKey: teamName }),
+    50
+  );
+
+  let coinsAdjust = 0;
+  for (const a of adjs) coinsAdjust += Number(a.amount || 0);
+
+  return coinsFromMatches + coinsAdjust;
+}
 
 function now() {
   return Date.now();
@@ -36,7 +175,7 @@ async function fetchPlayersByTeam(teamId) {
   }
 
   // 统一输出成你页面/逻辑习惯的结构：{id,name}
-  return all.map(x => ({ id: x.playerId, name: x.name, level:x.level}));
+  return all.map(x => ({ id: x.playerId, name: x.name, level:x.level, star:x.star}));
 }
 
 async function addCloudPlayer(teamId, playerId, name, level, star) {
@@ -99,5 +238,6 @@ module.exports = {
   fetchPlayersByTeam,
   addCloudPlayer,
   deleteCloudPlayer,
-  addPlayerLevelDelta
+  addPlayerLevelDelta,
+  addPlayerLevelWithCost
 };

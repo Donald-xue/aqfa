@@ -9,7 +9,8 @@ const {
   fetchPlayersByTeam,
   addCloudPlayer,
   deleteCloudPlayer,
-  addPlayerLevelDelta
+  addPlayerLevelDelta,
+  addPlayerLevelWithCost 
 } = require("../../utils/cloudPlayerStore");
 
 Page({
@@ -96,18 +97,42 @@ Page({
   
     try {
       wx.showLoading({ title: "Saving" });
-      await addPlayerLevelDelta(team.id, id, delta);
+ //      await addPlayerLevelDelta(team.id, id, delta);
   
       // 清空该行输入
       const deltaMap = { ...(this.data.deltaMap || {}) };
       delete deltaMap[id];
   
       this.setData({ deltaMap });
-      wx.showToast({ title: `+${delta}`, icon: "success" });
+//      wx.showToast({ title: `+${delta}`, icon: "success" });
+
+      const loginRes = await wx.cloud.callFunction({ name: "login" });
+      const openid =
+        loginRes?.result?.openid ||
+        loginRes?.result?.userInfo?.openId ||
+        "";
+  
+      const r = await addPlayerLevelWithCost(team.id, id, delta, team.name, openid);
+      wx.showToast({ title: `+${delta}级 扣费${r.cost}`, icon: "success" });
+
       await this.refreshPlayers();
     } catch (err) {
-      console.error("saveDelta error:", err);
-      wx.showToast({ title: "Save failed", icon: "none" });
+      console.error(err);
+
+  if (String(err.message) === "INVALID_DELTA_FOR_STAR4") {
+    wx.showToast({ title: "4⭐升级后等级必须是2的倍数，请重输", icon: "none" });
+    return;
+  }
+  if (String(err.message) === "INVALID_DELTA_FOR_STAR3") {
+    wx.showToast({ title: "3⭐升级后等级必须是3的倍数，请重输", icon: "none" });
+    return;
+  }
+  if (String(err.message) === "INSUFFICIENT_COINS") {
+    wx.showToast({ title: "球队金币不足，升级后会变负数", icon: "none" });
+    return;
+  }
+
+  wx.showToast({ title: "Save failed", icon: "none" });
     } finally {
       wx.hideLoading();
     }
