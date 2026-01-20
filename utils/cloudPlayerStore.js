@@ -7,6 +7,8 @@ const db = wx.cloud.database();
 const { LEAGUE_ID } = require("./cloudMatchStore");
 
 const PLAYERS = db.collection("players");
+const COL = "players";
+const _ = db.command;
 
 function now() {
   return Date.now();
@@ -34,10 +36,10 @@ async function fetchPlayersByTeam(teamId) {
   }
 
   // 统一输出成你页面/逻辑习惯的结构：{id,name}
-  return all.map(x => ({ id: x.playerId, name: x.name }));
+  return all.map(x => ({ id: x.playerId, name: x.name, level:x.level}));
 }
 
-async function addCloudPlayer(teamId, playerId, name) {
+async function addCloudPlayer(teamId, playerId, name, level) {
   if (!teamId || !playerId || !name) throw new Error("Missing teamId/playerId/name");
 
   // 避免重复：同 teamId + playerId 已存在就 update name
@@ -55,6 +57,7 @@ async function addCloudPlayer(teamId, playerId, name) {
       teamId,
       playerId,
       name,
+      level,
       createdAt: now(),
       updatedAt: now()
     }
@@ -70,8 +73,27 @@ async function deleteCloudPlayer(teamId, playerId) {
   return true;
 }
 
+async function addPlayerLevelDelta(teamId, playerId, delta) {
+  const d = Number(delta);
+  if (!Number.isFinite(d) || d <= 0) throw new Error("delta must be > 0");
+
+  // 先找到文档 _id
+  const res = await db.collection(COL).where({ teamId, playerId }).limit(1).get();
+  const doc = (res.data || [])[0];
+  if (!doc) throw new Error("Player not found");
+
+  // 原子自增
+  return db.collection(COL).doc(doc._id).update({
+    data: {
+      level: _.inc(d),
+      updatedAt: db.serverDate()
+    }
+  });
+}
+
 module.exports = {
   fetchPlayersByTeam,
   addCloudPlayer,
-  deleteCloudPlayer
+  deleteCloudPlayer,
+  addPlayerLevelDelta
 };

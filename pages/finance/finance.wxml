@@ -1,0 +1,80 @@
+<view class="page">
+  <view class="nav">
+    <text class="title">财政系统</text>
+    <view class="rule">
+      胜 +{{summary.win}} ｜ 平 +{{summary.draw}} ｜ 负 +{{summary.loss}}
+    </view>
+    <view class="meta">
+      已统计：{{summary.matchesCounted}} 场 ｜ 球队：{{summary.teams}}
+    </view>
+
+    <view class="actions">
+      <button size="mini" bindtap="toggleForm">{{showForm ? '取消' : '新增记账'}}</button>
+      <button size="mini" bindtap="refresh">刷新</button>
+      <button size="mini" bindtap="clearAllAdjustments">清空记账</button>
+    </view>
+  </view>
+
+  <!-- 手动记账表单 -->
+  <view class="card" wx:if="{{showForm}}">
+    <view class="cardTitle">新增记账</view>
+
+    <picker mode="selector" range="{{teamOptions}}" bindchange="onPickTeam">
+      <view class="inputLike">
+        {{formTeamKey ? formTeamKey : '选择球队'}}
+      </view>
+    </picker>
+
+    <input class="input" placeholder="金额（正数增加/负数扣除，例如 500 或 -200）" keyboard-type="number" bindinput="onAmountInput" value="{{formAmount}}" />
+    <input class="input" placeholder="备注（可选）" bindinput="onNoteInput" value="{{formNote}}" />
+
+    <button class="primary" bindtap="addAdjustment">保存</button>
+  </view>
+
+  
+  <view class="card">
+  <view class="cardTitle">我的显示名</view>
+  <input class="input" placeholder="例如：Scott / 管理员1" value="{{displayName}}" bindinput="onNameInput" />
+  <button class="primary" bindtap="saveName">保存</button>
+</view>
+
+  <!-- 财政总榜 -->
+  <view class="card">
+    <view class="cardTitle">球队财政榜</view>
+
+    <view class="table">
+      <view class="tr th">
+        <text class="td rank">#</text>
+        <text class="td team">球队</text>
+        <text class="td small">胜/平/负</text>
+        <text class="td small">比赛金币</text>
+        <text class="td small">手动调整</text>
+        <text class="td pts">总金币</text>
+      </view>
+
+      <view class="tr" wx:for="{{financeRows}}" wx:key="key" wx:for-item="r" wx:for-index="idx">
+        <text class="td rank">{{idx+1}}</text>
+        <text class="td team">{{r.name}}</text>
+        <text class="td small">{{r.wins}}/{{r.draws}}/{{r.losses}}</text>
+        <text class="td small">{{r.coinsFromMatches}}</text>
+        <text class="td small">{{r.coinsAdjust}}</text>
+        <text class="td pts">{{r.coinsTotal}}</text>
+      </view>
+    </view>
+  </view>
+
+    <view class="card">
+    <view class="cardTitle">记账记录</view>
+
+    <view wx:if="{{adjustments.length===0}}" class="empty">暂无手动记账</view>
+
+    <view wx:for="{{adjustments}}" wx:key="_id" wx:for-item="a" class="logItem">
+      <view class="logLeft">
+        <text class="logMain">{{a.teamKey}}  {{a.amount}}</text>
+        <text class="logSub">{{a.note}}</text>
+        <text class="logSub">{{a.createdName}}</text>
+      </view>
+      <button size="mini" data-id="{{a._id}}" bindtap="removeAdjustment">删除</button>
+    </view>
+  </view>
+</view>

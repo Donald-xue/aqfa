@@ -21,17 +21,35 @@
       <text class="label">添加球员</text>
       <view class="row">
         <input class="input" placeholder="球员名" value="{{newName}}" bindinput="onNewName"/>
+        <input class="input" placeholder="加点数" type="number" value="{{newLevel}}" bindinput="onNewLevel" />
         <button size="mini" type="primary" bindtap="addOne">添加球员</button>
       </view>
     </view>
 
     <view class="subTitle">球员列表</view>
-    <block wx:for="{{players}}" wx:key="id">
-      <view class="playerRow">
-        <text>{{item.name}}</text>
-        <button size="mini" type="warn" data-id="{{item.id}}" bindtap="removeOne">删除球员</button>
+    <view class="playerRow" wx:for="{{players}}" wx:key="_id" wx:for-item="p">
+      <view class="left">
+        <text class="name">{{p.name}} 点数：{{p.level || 0}}</text>
+
+        <view class="deltaRow">
+          <input
+          class="deltaInput"
+            type="number"
+            placeholder="+ 增加点数"
+            value="{{deltaMap[p.playerId || p.id]}}"
+            data-id="{{p.playerId || p.id}}"
+            bindinput="onDeltaInput"
+          />
+          <button
+            size="mini"
+            data-id="{{p.playerId || p.id}}"
+            bindtap="saveDelta"
+          >保存</button>
+        </view>
       </view>
-    </block>
+
+      <button size="mini" data-id="{{p.playerId || p.id}}" bindtap="removeOne">删除</button>
+    </view>
 
     <view wx:if="{{players.length===0}}" class="empty">列表中无球员。</view>
   </view>

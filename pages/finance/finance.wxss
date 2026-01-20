@@ -1,0 +1,32 @@
+/* pages/finance/finance.wxss */
+.page { background:#f6f7fb; min-height:100vh; padding-bottom: 24rpx; }
+.nav { background:#fff; padding: 20rpx 20rpx 14rpx; }
+.title { font-size: 34rpx; font-weight: 700; }
+.rule { margin-top: 8rpx; color:#666; font-size: 24rpx; }
+.meta { margin-top: 6rpx; color:#999; font-size: 22rpx; }
+
+.actions { margin-top: 14rpx; display:flex; gap: 14rpx; flex-wrap: wrap; }
+
+.card { margin: 18rpx 18rpx 0; background:#fff; border-radius: 18rpx; padding: 18rpx; }
+.cardTitle { font-size: 30rpx; font-weight: 600; margin-bottom: 14rpx; }
+
+.table { border-top: 1px solid #f0f0f0; }
+.tr { display:flex; align-items:center; padding: 14rpx 0; border-bottom: 1px solid #f5f5f5; }
+.th { color:#888; font-size: 22rpx; }
+.td { font-size: 24rpx; color:#111; }
+.rank { width: 60rpx; text-align:center; }
+.team { flex: 1; width: 160rpx; text-align:center; }
+.small { width: 100rpx; text-align:center; color:#555; }
+.pts { width: 120rpx; text-align:center; font-weight:700; }
+
+.empty { color:#999; font-size: 24rpx; padding: 10rpx 0; }
+
+.inputLike { padding: 18rpx; background:#f4f5f7; border-radius: 14rpx; color:#666; margin-bottom: 12rpx; }
+.input { padding: 18rpx; background:#f4f5f7; border-radius: 14rpx; margin-bottom: 12rpx; }
+
+.primary { background:#111; color:#fff; border-radius: 14rpx; }
+
+.logItem { display:flex; justify-content:space-between; align-items:center; padding: 14rpx 0; border-bottom: 1px solid #f5f5f5; }
+.logLeft { display:flex; flex-direction:column; gap: 6rpx; }
+.logMain { font-size: 26rpx; color:#111; }
+.logSub { font-size: 22rpx; color:#999; }
