@@ -1,0 +1,39 @@
+<view class="page">
+  <view class="header">
+    <text class="title">主页</text>
+    <text class="sub">选择功能进入</text>
+  </view>
+
+  <view class="grid">
+    <view class="card" bindtap="go" data-url="/pages/standings/standings">
+      <text class="cardTitle">联赛</text>
+      <text class="cardSub">积分榜 / 赛程</text>
+    </view>
+
+    <view class="card" bindtap="go" data-url="/pages/cup/cup">
+      <text class="cardTitle">杯赛</text>
+      <text class="cardSub">小组赛 / 淘汰赛</text>
+    </view>
+
+    <view class="card" bindtap="go" data-url="/pages/finance/finance">
+      <text class="cardTitle">财政</text>
+      <text class="cardSub">金币统计 / 记账</text>
+    </view>
+
+    <view class="card" bindtap="go" data-url="/pages/players/players">
+      <text class="cardTitle">球员</text>
+      <text class="cardSub">管理球员 / 点数</text>
+    </view>
+
+    <!-- 你还可以继续加更多入口 -->
+  </view>
+  <view class="banner">
+  <image class="bannerImg" src="apfa.jpg" mode="widthFix" />
+  <view class="bannerMask"></view>
+
+  <view class="bannerText">
+    <text class="bannerTitle">水群赛事中心</text>
+    <text class="bannerSub">这里的足球很纯粹</text>
+  </view>
+</view>
+</view>

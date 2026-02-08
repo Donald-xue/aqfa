@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/home/home",
     "pages/standings/standings",
     "pages/match/match",
     "pages/players/players",
@@ -13,6 +14,16 @@
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black",
     "backgroundTextStyle": "light"
-  }
+  },
+  
+"tabBar": {
+  "list": [
+    { "pagePath": "pages/home/home", "text": "主页" },
+    { "pagePath": "pages/standings/standings", "text": "联赛" },
+    { "pagePath": "pages/cup/cup", "text": "杯赛" },
+    { "pagePath": "pages/finance/finance", "text": "财政" },
+    { "pagePath": "pages/players/players", "text": "球员" }
+  ]
+}
 }
 

@@ -11,11 +11,11 @@ const cupGroups = [
 // 注意：比分 null 表示未赛；你以后填真实比分即可
 const cupGroupMatches = [
   // Group A
-  { id: 1001, date: "2025-09-01", time: "18:00", home: "香港秦始皇", away: "我没意见", homeScore: 2, awayScore: 1, playerEvents: [
-    { type: "goal", player: "lsq", team: "香港秦始皇", minute: 12 },
+  { id: 1001, date: "2025-09-01", time: "18:00", home: "香港秦始皇", away: "我没意见", homeScore: null, awayScore: null, playerEvents: [
+//    { type: "goal", player: "lsq", team: "香港秦始皇", minute: 12 },
 //    { type: "assist", player: "PlayerB", team: "香港秦始皇", minute: 12 },
-    { type: "assist", player: "lsq", team: "香港秦始皇", minute: 12 },
-    { type: "goal", player: "PlayerC", team: "我没意见", minute: 55 }
+//    { type: "assist", player: "lsq", team: "香港秦始皇", minute: 12 },
+//    { type: "goal", player: "PlayerC", team: "我没意见", minute: 55 }
   ], division: "Group A", cupId: "aqcup", season: "3rd" },
   { id: 1002, date: "2025-09-03", time: "18:00", home: "香港秦始皇", away: "西红柿马铃薯", homeScore: null, awayScore: null, playerEvents: [], division: "Group A", cupId: "aqcup", season: "3rd" },
   { id: 1003, date: "2025-09-05", time: "18:00", home: "我没意见", away: "西红柿马铃薯", homeScore: null, awayScore: null, playerEvents: [], division: "Group A", cupId: "aqcup", season: "3rd" },
