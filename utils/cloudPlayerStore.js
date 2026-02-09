@@ -139,7 +139,8 @@ async function getTeamCoins(teamName) {
 
   // 2) 手动记账：sum(amount)
   const adjs = await fetchAll(
-    FIN_ADJ_COL.where({ leagueId: LEAGUE_ID, teamKey: teamName }),
+//    FIN_ADJ_COL.where({ leagueId: LEAGUE_ID, teamKey: teamName }),
+    FIN_ADJ_COL.where({ teamKey: teamName }),
     50
   );
 
