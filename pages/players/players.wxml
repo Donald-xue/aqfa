@@ -29,6 +29,17 @@
       </view>
     </view>
 
+    <view class="field">
+      <text class="label">转会费（可选，正数）</text>
+      <input
+        class="input"
+        type="number"
+        placeholder="例如 500，留空或 0 表示不记账"
+        value="{{transferFee}}"
+        bindinput="onTransferFeeInput"
+      />
+    </view>
+
     <view class="subTitle">球员列表</view>
     <view class="playerRow" wx:for="{{players}}" wx:key="_id" wx:for-item="p">
       <view class="left">
@@ -52,9 +63,44 @@
         </view>
       </view>
 
-      <button size="mini" data-id="{{p.playerId || p.id}}" bindtap="removeOne">删除</button>
+      <view class="playerActions">
+        <button
+          size="mini"
+          data-id="{{p.playerId || p.id}}"
+          bindtap="onTransferPlayerTap"
+        >转会</button>
+        <button
+          size="mini"
+          type="warn"
+          data-id="{{p.playerId || p.id}}"
+          bindtap="removeOne"
+        >删除</button>
+      </view>
     </view>
 
     <view wx:if="{{players.length===0}}" class="empty">列表中无球员。</view>
+  </view>
+
+  <!-- 转会选择弹窗 -->
+  <view wx:if="{{showTransferPicker}}" class="transferMask">
+    <view class="transferPanel">
+      <view class="transferTitle">选择转入队伍</view>
+      <picker
+        mode="selector"
+        range="{{transferCandidates}}"
+        range-key="name"
+        value="{{transferCandidateIndex}}"
+        bindchange="onTransferTargetChange"
+      >
+        <view class="picker">
+          {{ transferCandidates[transferCandidateIndex].name || "请选择队伍" }}
+        </view>
+      </picker>
+
+      <view class="transferBtns">
+        <button size="mini" bindtap="onCancelTransfer">取消</button>
+        <button size="mini" type="primary" bindtap="onConfirmTransfer">确认</button>
+      </view>
+    </view>
   </view>
 </view>

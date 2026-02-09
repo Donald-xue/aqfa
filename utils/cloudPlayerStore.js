@@ -179,6 +179,80 @@ async function fetchPlayersByTeam(teamId) {
   return all.map(x => ({ id: x.playerId, name: x.name, level:x.level, star:x.star}));
 }
 
+// 球员转会：在同一联赛内从一支队伍转到另一支队伍（或自由市场），可选附带转会费记账
+// fee >= 0 且双方都是真实球队时：fromTeam +fee，toTeam -fee（fee=0 时也会写 0 元记录）
+async function transferPlayer(
+  fromTeamId,
+  toTeamId,
+  playerId,
+  fromTeamName = "",
+  toTeamName = "",
+  fee = 0,
+  createdBy = "",
+  createdName = ""
+) {
+  if (!fromTeamId || !toTeamId || !playerId) {
+    throw new Error("Missing fromTeamId/toTeamId/playerId");
+  }
+
+  // 找到当前所在队伍下的该球员
+  const res = await PLAYERS_COL
+    .where({ leagueId: LEAGUE_ID, teamId: fromTeamId, playerId })
+    .limit(1)
+    .get();
+
+  const doc = (res.data || [])[0];
+  if (!doc) {
+    throw new Error("Player not found");
+  }
+
+  // 直接更新 teamId 即可（不改 playerId / 其他信息）
+  await PLAYERS_COL.doc(doc._id).update({
+    data: {
+      teamId: toTeamId,
+      updatedAt: now()
+    }
+  });
+
+  const isRealTeam = (tid) => tid && tid !== "free_market";
+  const rawAmount = Number(fee);
+  const amount = Number.isFinite(rawAmount) && rawAmount >= 0 ? rawAmount : 0;
+
+  // 双方都是真实球队时，写转会费记账（包括 0 元转会）
+  if (isRealTeam(fromTeamId) && isRealTeam(toTeamId) && amount >= 0 && fromTeamName && toTeamName) {
+    const noteBase = `转会费：${doc.name} (${fromTeamName} -> ${toTeamName})`;
+
+    await Promise.all([
+      // 出队一方：收入
+      FIN_ADJ_COL.add({
+        data: {
+          leagueId: LEAGUE_ID,
+          teamKey: fromTeamName,
+          amount: amount,
+          note: `${noteBase} 收入`,
+          createdAt: now(),
+          createdBy: createdBy || "",
+          createdName: createdName || ""
+        }
+      }),
+      // 加盟一方：支出
+      FIN_ADJ_COL.add({
+        data: {
+          leagueId: LEAGUE_ID,
+          teamKey: toTeamName,
+          amount: -amount,
+          note: `${noteBase} 支出`,
+          createdAt: now(),
+          createdBy: createdBy || "",
+          createdName: createdName || ""
+        }
+      })
+    ]);
+  }
+
+  return { playerId, fromTeamId, toTeamId, name: doc.name };
+}
+
 async function addCloudPlayer(teamId, playerId, name, level, star) {
   if (!teamId || !playerId || !name) throw new Error("Missing teamId/playerId/name");
 
@@ -240,5 +314,6 @@ module.exports = {
   addCloudPlayer,
   deleteCloudPlayer,
   addPlayerLevelDelta,
-  addPlayerLevelWithCost
+  addPlayerLevelWithCost,
+  transferPlayer
 };

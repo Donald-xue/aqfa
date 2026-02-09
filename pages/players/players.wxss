@@ -10,3 +10,38 @@
 .playerRow { display:flex; justify-content:space-between; align-items:center; padding: 12rpx 0; border-bottom: 1px solid #f3f3f3; }
 .playerRow:last-child { border-bottom:none; }
 .empty { color:#777; padding: 12rpx 0; }
+.playerActions { display:flex; flex-direction:column; gap: 8rpx; }
+
+.transferMask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 999;
+}
+
+.transferPanel {
+  width: 100%;
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 24rpx;
+  box-shadow: 0 -8rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+
+.transferTitle {
+  font-size: 32rpx;
+  font-weight: 700;
+  margin-bottom: 16rpx;
+}
+
+.transferBtns {
+  margin-top: 24rpx;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16rpx;
+}

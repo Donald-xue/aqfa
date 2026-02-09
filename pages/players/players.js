@@ -10,7 +10,8 @@ const {
   addCloudPlayer,
   deleteCloudPlayer,
   addPlayerLevelDelta,
-  addPlayerLevelWithCost 
+  addPlayerLevelWithCost,
+  transferPlayer
 } = require("../../utils/cloudPlayerStore");
 
 Page({
@@ -25,6 +26,13 @@ Page({
     deltaMap: {},
     starOptions: [1,2,3,4,5],
     starIndex: 4,
+    transferFee: "", // 转会费（正数，单位同财务页金币）
+    showTransferPicker: false,
+    transferCandidates: [],
+    transferCandidateIndex: 0,
+    transferPlayerId: "",
+    transferFromTeamId: "",
+    transferFromTeamName: "",
   },
 
   onStarChange(e) {
@@ -33,9 +41,14 @@ Page({
 
   async onShow() {
     const { teams } = loadLeague();
-    const teamNames = (teams || []).map(t => t.name);
+    const baseTeams = teams || [];
 
-    this.setData({ teams, teamNames, teamIndex: 0 });
+    // 追加一个“自由市场”虚拟队伍，仅用于管理未签约球员
+    const freeMarketTeam = { id: "free_market", name: "自由市场" };
+    const allTeams = [...baseTeams, freeMarketTeam];
+    const teamNames = allTeams.map(t => t.name);
+
+    this.setData({ teams: allTeams, teamNames, teamIndex: 0 });
 
     await this.refreshPlayers();
   },
@@ -133,6 +146,121 @@ Page({
   }
 
   wx.showToast({ title: "Save failed", icon: "none" });
+    } finally {
+      wx.hideLoading();
+    }
+  },
+
+  onTransferFeeInput(e) {
+    this.setData({ transferFee: e.detail.value });
+  },
+
+  // 打开球员转会弹窗：从当前队伍转到其他队伍或自由市场
+  onTransferPlayerTap(e) {
+    const id = e.currentTarget.dataset.id;
+    const teams = this.data.teams || [];
+    const team = teams[this.data.teamIndex];
+    if (!team || !id) return;
+
+    // 目的地列表：排除当前队伍，如果当前不是自由市场，则额外提供“自由市场”
+    const allCandidates = teams
+      .filter(t => t && t.id && t.id !== team.id && t.id !== "free_market")
+      .map(t => ({ id: t.id, name: t.name }));
+
+    if (team.id !== "free_market") {
+      allCandidates.push({ id: "free_market", name: "自由市场" });
+    }
+
+    if (!allCandidates.length) {
+      wx.showToast({ title: "暂无可转入的队伍", icon: "none" });
+      return;
+    }
+
+    this.setData({
+      showTransferPicker: true,
+      transferCandidates: allCandidates,
+      transferCandidateIndex: 0,
+      transferPlayerId: id,
+      transferFromTeamId: team.id,
+      transferFromTeamName: team.name
+    });
+  },
+
+  onTransferTargetChange(e) {
+    this.setData({ transferCandidateIndex: Number(e.detail.value) || 0 });
+  },
+
+  onCancelTransfer() {
+    this.setData({
+      showTransferPicker: false,
+      transferCandidates: [],
+      transferCandidateIndex: 0,
+      transferPlayerId: "",
+      transferFromTeamId: "",
+      transferFromTeamName: ""
+    });
+  },
+
+  async onConfirmTransfer() {
+    const {
+      transferCandidates,
+      transferCandidateIndex,
+      transferPlayerId,
+      transferFromTeamId,
+      transferFromTeamName
+    } = this.data;
+
+    const target = (transferCandidates || [])[transferCandidateIndex] || transferCandidates[0];
+    if (!target || !transferPlayerId || !transferFromTeamId) {
+      wx.showToast({ title: "请选择转入队伍", icon: "none" });
+      return;
+    }
+
+    // 解析本次转会费（可为空或 0）
+    const feeRaw = this.data.transferFee;
+    const feeNum = Number(feeRaw);
+    const fee = Number.isFinite(feeNum) && feeNum >= 0 ? feeNum : 0;
+
+    // 记账人信息复用财务页的显示名
+    let displayName = "";
+    try {
+      displayName = (wx.getStorageSync("finance_display_name") || "").trim();
+    } catch (e) {
+      displayName = "";
+    }
+
+    // 获取 openid 用于 createdBy（可选）
+    let openid = "";
+    try {
+      const loginRes = await wx.cloud.callFunction({ name: "login" });
+      openid =
+        loginRes?.result?.openid ||
+        loginRes?.result?.userInfo?.openId ||
+        "";
+    } catch (e2) {
+      openid = "";
+    }
+
+    try {
+      wx.showLoading({ title: "转会中" });
+
+      await transferPlayer(
+        transferFromTeamId,
+        target.id,
+        transferPlayerId,
+        transferFromTeamName,
+        target.name,
+        fee,
+        openid,
+        displayName
+      );
+
+      wx.showToast({ title: "已转会", icon: "success" });
+      this.setData({ showTransferPicker: false });
+      await this.refreshPlayers();
+    } catch (err) {
+      console.error("transferPlayer error:", err);
+      wx.showToast({ title: "转会失败", icon: "none" });
     } finally {
       wx.hideLoading();
     }
