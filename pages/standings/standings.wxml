@@ -24,7 +24,15 @@
     <block wx:for="{{table}}" wx:key="id">
       <view class="row">
         <text class="b rank">{{item.rank}}</text>
-        <text class="b team">{{item.name}}</text>
+        <view class="b team">
+          <image
+            wx:if="{{item.logo}}"
+            class="teamLogoSmall"
+            src="{{item.logo}}"
+            mode="aspectFill"
+          />
+          <text class="teamName">{{item.name}}</text>
+        </view>
         <text class="c">{{item.played}}</text>
         <text class="d">{{item.wins}}/{{item.draws}}/{{item.losses}}</text>
         <text class="c">{{item.gf}}/{{item.ga}}</text>

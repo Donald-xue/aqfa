@@ -1,5 +1,6 @@
 const { computeTable, loadLeague, saveLeague, defaultTeams } = require("../../utils/league");
 const { ensureCloudMatchesInitialized, fetchPlayedMatches } = require("../../utils/cloudMatchStore");
+const { fetchTeamLogos } = require("../../utils/cloudTeamStore");
 
 Page({
   data: {
@@ -29,6 +30,18 @@ Page({
 
     const table = computeTable(teams, matches);
 
+    // 叠加队徽信息
+    let teamLogos = {};
+    try {
+      teamLogos = await fetchTeamLogos();
+    } catch (e) {
+      console.error("fetchTeamLogos in standings error:", e);
+    }
+    const tableWithLogo = (table || []).map(row => ({
+      ...row,
+      logo: teamLogos[row.id] || ""
+    }));
+
     // 为展示方便把球队名写进 match
     const teamMap = new Map(teams.map(t => [t.id, t.name]));
     const matchesView = matches.map(m => ({
@@ -37,7 +50,7 @@ Page({
       awayName: teamMap.get(m.awayId) || m.awayId,
     })).slice().reverse(); // 最新在上
 
-    this.setData({ table, matches: matchesView });
+    this.setData({ table: tableWithLogo, matches: matchesView });
   },
 
   goAddMatch() {

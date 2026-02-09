@@ -15,8 +15,28 @@
 .c { width: 70rpx; text-align:center; font-size: 24rpx;}
 .d { width: 110rpx; text-align:center; font-size: 24rpx;}
 .rank { width: 70rpx; }
-.team { flex: 1; text-align:center; padding-left: 8rpx; }
+.team {
+  flex: 1;
+  padding-left: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8rpx;
+}
 .pts { width: 60rpx; font-weight: 700; }
+
+.teamLogoSmall {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  background: #fafafa;
+}
+
+.teamName {
+  flex: 1;
+  text-align: left;
+}
 
 .matches { margin-top: 20rpx; background:#fff; border-radius: 16rpx; padding: 16rpx; box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.06); }
 .subTitle { font-size: 32rpx; font-weight: 700; margin-bottom: 12rpx; }

@@ -15,6 +15,16 @@
           {{teamNames[teamIndex]}}
         </view>
       </picker>
+
+      <view class="teamLogoRow">
+        <image
+          wx:if="{{teamLogos && teams[teamIndex] && teamLogos[teams[teamIndex].id]}}"
+          class="teamLogo"
+          src="{{teamLogos[teams[teamIndex].id]}}"
+          mode="aspectFill"
+        />
+        <button size="mini" bindtap="onChangeTeamLogo">设置队徽</button>
+      </view>
     </view>
 
     <view class="field">
@@ -43,12 +53,29 @@
     <view class="subTitle">球员列表</view>
     <view class="playerRow" wx:for="{{players}}" wx:key="_id" wx:for-item="p">
       <view class="left">
-        <text class="sub">{{p.star}}⭐</text>
-        <text class="name">{{p.name}} 点数：{{p.level || 0}}</text>
+        <view class="playerHeader">
+          <image
+            wx:if="{{p.avatar}}"
+            class="playerAvatar"
+            src="{{p.avatar}}"
+            mode="aspectFill"
+          />
+          <view class="playerInfo">
+            <text class="sub">{{p.star}}⭐</text>
+            <text class="name">{{p.name}} 点数：{{p.level || 0}}</text>
+          </view>
+        </view>
+
+        <button
+          class="avatarBtn"
+          size="mini"
+          data-id="{{p.playerId || p.id}}"
+          bindtap="onChangePlayerAvatar"
+        >设置头像</button>
 
         <view class="deltaRow">
           <input
-          class="deltaInput"
+            class="deltaInput"
             type="number"
             placeholder="+ 增加点数"
             value="{{deltaMap[p.playerId || p.id]}}"

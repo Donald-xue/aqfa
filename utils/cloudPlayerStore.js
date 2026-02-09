@@ -176,7 +176,39 @@ async function fetchPlayersByTeam(teamId) {
   }
 
   // 统一输出成你页面/逻辑习惯的结构：{id,name}
-  return all.map(x => ({ id: x.playerId, name: x.name, level:x.level, star:x.star}));
+  return all.map(x => ({
+    id: x.playerId,
+    name: x.name,
+    level: x.level,
+    star: x.star,
+    avatar: x.avatar || ""
+  }));
+}
+
+// 更新球员头像（存储为云文件 fileID）
+async function updatePlayerAvatar(teamId, playerId, avatarFileId) {
+  if (!teamId || !playerId || !avatarFileId) {
+    throw new Error("Missing teamId/playerId/avatarFileId");
+  }
+
+  const res = await PLAYERS_COL
+    .where({ leagueId: LEAGUE_ID, teamId, playerId })
+    .limit(1)
+    .get();
+
+  const doc = (res.data || [])[0];
+  if (!doc || !doc._id) {
+    throw new Error("Player not found");
+  }
+
+  await PLAYERS_COL.doc(doc._id).update({
+    data: {
+      avatar: avatarFileId,
+      updatedAt: now()
+    }
+  });
+
+  return { teamId, playerId, avatar: avatarFileId };
 }
 
 // 球员转会：在同一联赛内从一支队伍转到另一支队伍（或自由市场），可选附带转会费记账
@@ -315,5 +347,6 @@ module.exports = {
   deleteCloudPlayer,
   addPlayerLevelDelta,
   addPlayerLevelWithCost,
-  transferPlayer
+  transferPlayer,
+  updatePlayerAvatar
 };

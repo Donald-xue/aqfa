@@ -11,8 +11,14 @@ const {
   deleteCloudPlayer,
   addPlayerLevelDelta,
   addPlayerLevelWithCost,
-  transferPlayer
+  transferPlayer,
+  updatePlayerAvatar
 } = require("../../utils/cloudPlayerStore");
+
+const {
+  fetchTeamLogos,
+  upsertTeamLogo
+} = require("../../utils/cloudTeamStore");
 
 Page({
   data: {
@@ -20,6 +26,7 @@ Page({
     teamNames: [],
     teamIndex: 0,
     players: [],
+    teamLogos: {},
     newName: "",
     newlevel: 0,
     levelDelta: "",
@@ -48,7 +55,14 @@ Page({
     const allTeams = [...baseTeams, freeMarketTeam];
     const teamNames = allTeams.map(t => t.name);
 
-    this.setData({ teams: allTeams, teamNames, teamIndex: 0 });
+    let teamLogos = {};
+    try {
+      teamLogos = await fetchTeamLogos();
+    } catch (e) {
+      console.error("fetchTeamLogos error:", e);
+    }
+
+    this.setData({ teams: allTeams, teamNames, teamIndex: 0, teamLogos });
 
     await this.refreshPlayers();
   },
@@ -153,6 +167,48 @@ Page({
 
   onTransferFeeInput(e) {
     this.setData({ transferFee: e.detail.value });
+  },
+
+  async onChangeTeamLogo() {
+    const teams = this.data.teams || [];
+    const team = teams[this.data.teamIndex];
+    if (!team || !team.id) return;
+
+    try {
+      const chooseRes = await new Promise((resolve, reject) => {
+        wx.chooseImage({
+          count: 1,
+          sizeType: ["compressed"],
+          sourceType: ["album", "camera"],
+          success: resolve,
+          fail: reject
+        });
+      });
+
+      const filePath = (chooseRes.tempFilePaths || [])[0];
+      if (!filePath) return;
+
+      wx.showLoading({ title: "上传中" });
+
+      const uploadRes = await wx.cloud.uploadFile({
+        cloudPath: `team_logos/${team.id}_${Date.now()}.jpg`,
+        filePath
+      });
+
+      const fileID = uploadRes.fileID;
+      await upsertTeamLogo(team.id, team.name, fileID);
+
+      const teamLogos = { ...(this.data.teamLogos || {}) };
+      teamLogos[team.id] = fileID;
+      this.setData({ teamLogos });
+
+      wx.showToast({ title: "已更新队徽", icon: "success" });
+    } catch (err) {
+      console.error("onChangeTeamLogo error:", err);
+      wx.showToast({ title: "队徽上传失败", icon: "none" });
+    } finally {
+      wx.hideLoading();
+    }
   },
 
   // 打开球员转会弹窗：从当前队伍转到其他队伍或自由市场
@@ -261,6 +317,52 @@ Page({
     } catch (err) {
       console.error("transferPlayer error:", err);
       wx.showToast({ title: "转会失败", icon: "none" });
+    } finally {
+      wx.hideLoading();
+    }
+  },
+
+  async onChangePlayerAvatar(e) {
+    const id = e.currentTarget.dataset.id;
+    const teams = this.data.teams || [];
+    const team = teams[this.data.teamIndex];
+    if (!team || !team.id || !id) return;
+
+    try {
+      const chooseRes = await new Promise((resolve, reject) => {
+        wx.chooseImage({
+          count: 1,
+          sizeType: ["compressed"],
+          sourceType: ["album", "camera"],
+          success: resolve,
+          fail: reject
+        });
+      });
+
+      const filePath = (chooseRes.tempFilePaths || [])[0];
+      if (!filePath) return;
+
+      wx.showLoading({ title: "上传中" });
+
+      const uploadRes = await wx.cloud.uploadFile({
+        cloudPath: `player_avatars/${team.id}_${id}_${Date.now()}.jpg`,
+        filePath
+      });
+
+      const fileID = uploadRes.fileID;
+      await updatePlayerAvatar(team.id, id, fileID);
+
+      const players = (this.data.players || []).map(p => {
+        const pid = p.playerId || p.id;
+        if (String(pid) !== String(id)) return p;
+        return { ...p, avatar: fileID };
+      });
+      this.setData({ players });
+
+      wx.showToast({ title: "头像已更新", icon: "success" });
+    } catch (err) {
+      console.error("onChangePlayerAvatar error:", err);
+      wx.showToast({ title: "头像上传失败", icon: "none" });
     } finally {
       wx.hideLoading();
     }

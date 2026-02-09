@@ -12,6 +12,40 @@
 .empty { color:#777; padding: 12rpx 0; }
 .playerActions { display:flex; flex-direction:column; gap: 8rpx; }
 
+.teamLogoRow {
+  margin-top: 8rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.teamLogo {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  background: #fafafa;
+}
+
+.playerHeader {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+.playerAvatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  background: #fafafa;
+}
+
+.playerInfo .name {
+  display: block;
+}
+
 .transferMask {
   position: fixed;
   left: 0;
