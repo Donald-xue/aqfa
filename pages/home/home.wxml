@@ -36,4 +36,59 @@
     <text class="bannerSub">这里的足球很纯粹</text>
   </view>
 </view>
+
+  <view class="newsSection">
+    <view class="newsHeader">
+      <text class="newsTitle">联赛新闻</text>
+      <button size="mini" bindtap="onAddNewsTap">新增 / 编辑</button>
+    </view>
+
+    <view wx:if="{{showNewsForm}}" class="newsForm">
+      <input
+        class="newsInput"
+        placeholder="新闻标题"
+        value="{{newsTitle}}"
+        bindinput="onNewsTitleInput"
+      />
+      <textarea
+        class="newsTextarea"
+        placeholder="新闻内容（支持多行）"
+        value="{{newsContent}}"
+        bindinput="onNewsContentInput"
+      />
+      <view class="newsFormBtns">
+        <button size="mini" bindtap="onCancelNews">取消</button>
+        <button size="mini" type="primary" bindtap="onSubmitNews">保存</button>
+      </view>
+    </view>
+
+    <view wx:if="{{newsList.length > 0}}" class="newsList">
+      <view
+        wx:for="{{newsList}}"
+        wx:key="_id"
+        class="newsItem"
+        bindtap="onEditNewsTap"
+        data-id="{{item._id}}"
+      >
+        <view class="newsItemHeader">
+          <text class="newsItemTitle">{{item.title}}</text>
+          <view class="newsItemHeaderRight">
+            <text class="newsItemDate">{{item.dateText}}</text>
+            <button
+              size="mini"
+              type="warn"
+              class="newsDeleteBtn"
+              catchtap="onDeleteNewsTap"
+              data-id="{{item._id}}"
+            >删</button>
+          </view>
+        </view>
+        <text class="newsItemContent">{{item.content}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{newsList.length === 0}}" class="newsEmpty">
+      暂无新闻，点击右上角按钮添加一条吧～
+    </view>
+  </view>
 </view>
