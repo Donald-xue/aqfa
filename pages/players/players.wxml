@@ -50,6 +50,27 @@
       />
     </view>
 
+    <view class="field">
+      <text class="label">搜索球员（跨所有球队）</text>
+      <view class="row">
+        <input
+          class="input"
+          placeholder="输入球员名，例如 张三"
+          value="{{searchName}}"
+          bindinput="onSearchNameInput"
+        />
+        <button size="mini" bindtap="onSearchPlayer">搜索</button>
+      </view>
+      <view wx:if="{{searchSearched && searchResults.length > 0}}" class="searchResultBox">
+        <view wx:for="{{searchResults}}" wx:key="index" class="searchResultRow">
+          <text>{{item.name}} 在 {{item.teamName}}</text>
+        </view>
+      </view>
+      <view wx:if="{{searchSearched && searchResults.length === 0}}" class="empty">
+        没有此球员的数据
+      </view>
+    </view>
+
     <view class="subTitle">球员列表</view>
     <view class="playerRow" wx:for="{{players}}" wx:key="_id" wx:for-item="p">
       <view class="left">

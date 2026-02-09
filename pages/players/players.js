@@ -12,7 +12,8 @@ const {
   addPlayerLevelDelta,
   addPlayerLevelWithCost,
   transferPlayer,
-  updatePlayerAvatar
+  updatePlayerAvatar,
+  searchPlayersByName
 } = require("../../utils/cloudPlayerStore");
 
 const {
@@ -40,6 +41,9 @@ Page({
     transferPlayerId: "",
     transferFromTeamId: "",
     transferFromTeamName: "",
+    searchName: "",
+    searchResults: [],
+    searchSearched: false,
   },
 
   onStarChange(e) {
@@ -167,6 +171,50 @@ Page({
 
   onTransferFeeInput(e) {
     this.setData({ transferFee: e.detail.value });
+  },
+
+  onSearchNameInput(e) {
+    this.setData({ searchName: e.detail.value });
+  },
+
+  async onSearchPlayer() {
+    const name = (this.data.searchName || "").trim();
+    if (!name) {
+      wx.showToast({ title: "请输入球员名", icon: "none" });
+      return;
+    }
+
+    try {
+      wx.showLoading({ title: "搜索中" });
+      const list = await searchPlayersByName(name);
+
+      const teams = this.data.teams || [];
+      const teamMap = {};
+      (teams || []).forEach(t => {
+        if (t && t.id) {
+          teamMap[String(t.id)] = t.name;
+        }
+      });
+
+      const results = (list || []).map(p => {
+        const teamIdStr = String(p.teamId || "");
+        const teamName = teamMap[teamIdStr] || (teamIdStr === "free_market" ? "自由市场" : teamIdStr || "未知队伍");
+        return {
+          name: p.name,
+          teamName
+        };
+      });
+
+      this.setData({
+        searchResults: results,
+        searchSearched: true
+      });
+    } catch (err) {
+      console.error("onSearchPlayer error:", err);
+      wx.showToast({ title: "搜索失败", icon: "none" });
+    } finally {
+      wx.hideLoading();
+    }
   },
 
   async onChangeTeamLogo() {

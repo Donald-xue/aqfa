@@ -46,6 +46,18 @@
   display: block;
 }
 
+.searchResultBox {
+  margin-top: 8rpx;
+  padding: 8rpx 12rpx;
+  background: #fafafa;
+  border-radius: 8rpx;
+}
+
+.searchResultRow {
+  font-size: 26rpx;
+  padding: 4rpx 0;
+}
+
 .transferMask {
   position: fixed;
   left: 0;

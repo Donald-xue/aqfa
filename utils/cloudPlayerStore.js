@@ -185,6 +185,35 @@ async function fetchPlayersByTeam(teamId) {
   }));
 }
 
+// 按名字（模糊，不区分大小写）在当前联赛所有球队中搜索球员
+async function searchPlayersByName(keyword) {
+  const kw = (keyword || "").trim();
+  if (!kw) return [];
+
+  // 使用云数据库正则，实现不区分大小写的模糊匹配
+  const reg = db.RegExp({
+    regexp: kw,
+    options: "i"
+  });
+
+  const res = await PLAYERS_COL
+    .where({
+      leagueId: LEAGUE_ID,
+      name: reg
+    })
+    .get();
+
+  const list = res.data || [];
+  return list.map(x => ({
+    teamId: x.teamId,
+    playerId: x.playerId,
+    name: x.name,
+    level: x.level,
+    star: x.star,
+    avatar: x.avatar || ""
+  }));
+}
+
 // 更新球员头像（存储为云文件 fileID）
 async function updatePlayerAvatar(teamId, playerId, avatarFileId) {
   if (!teamId || !playerId || !avatarFileId) {
@@ -348,5 +377,6 @@ module.exports = {
   addPlayerLevelDelta,
   addPlayerLevelWithCost,
   transferPlayer,
-  updatePlayerAvatar
+  updatePlayerAvatar,
+  searchPlayersByName
 };
