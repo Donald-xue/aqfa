@@ -21,7 +21,7 @@
     </view>
 
     <view class="card" bindtap="go" data-url="/pages/players/players">
-      <text class="cardTitle">球员</text>
+      <text class="cardTitle">球队</text>
       <text class="cardSub">管理球员 / 点数</text>
     </view>
 

@@ -10,7 +10,7 @@
     "pages/finance/finance"
   ],
   "window": {
-    "navigationBarTitleText": "水群超级联赛",
+    "navigationBarTitleText": "Aqfa StatZone",
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black",
     "backgroundTextStyle": "light"
@@ -22,7 +22,7 @@
     { "pagePath": "pages/standings/standings", "text": "联赛" },
     { "pagePath": "pages/cup/cup", "text": "杯赛" },
     { "pagePath": "pages/finance/finance", "text": "财政" },
-    { "pagePath": "pages/players/players", "text": "球员" }
+    { "pagePath": "pages/players/players", "text": "球队" }
   ]
 }
 }

@@ -156,7 +156,7 @@ function now() {
 
 // 分页拉某队球员
 async function fetchPlayersByTeam(teamId) {
-  const pageSize = 50;
+  const pageSize = 20;
   let all = [];
   let skip = 0;
 
