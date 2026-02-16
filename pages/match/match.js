@@ -29,7 +29,10 @@ async function initPlayerRows(teamId) {
     goals: "0",
     assists: "0",
     MVP: "0",
-    red: "0"
+    red: "0",
+    yellow: "0",      // ✅ 黄牌
+    penalty: "0",     // ✅ 点球（进球数）
+    ownGoal: "0"      // ✅ 乌龙球
   }));
 }
 
@@ -102,7 +105,10 @@ Page({
           goals: String(e.goals ?? 0),
           assists: String(e.assists ?? 0),
           MVP: String(e.MVP ?? 0),
-          red: String(e.red ?? 0)
+          red: String(e.red ?? 0),
+          yellow: String(e.yellow ?? 0),      // ✅
+          penalty: String(e.penalty ?? 0),    // ✅
+          ownGoal: String(e.ownGoal ?? 0)     // ✅
         };
       });
 
@@ -265,7 +271,10 @@ Page({
             goals: num(r.goals),
             assists: num(r.assists),
             MVP: num(r.MVP),
-            red: num(r.red)
+            red: num(r.red),
+            yellow: num(r.yellow),      // ✅
+            penalty: num(r.penalty),    // ✅
+            ownGoal: num(r.ownGoal)     // ✅
           }));
   
       const playerEvents = pick(this.data.homePlayers).concat(pick(this.data.awayPlayers));

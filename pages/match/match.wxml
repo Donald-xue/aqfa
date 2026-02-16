@@ -57,6 +57,18 @@
           <text>RC</text>
           <input type="number" value="{{item.red}}" data-side="home" data-idx="{{index}}" data-field="red" bindinput="updatePlayerNumber" class="nInput"/>
         </view>
+        <view class="n">
+          <text>YC</text>
+          <input type="number" value="{{item.yellow}}" data-side="home" data-idx="{{index}}" data-field="yellow" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+        <view class="n">
+          <text>P</text>
+          <input type="number" value="{{item.penalty}}" data-side="home" data-idx="{{index}}" data-field="penalty" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+          <view class="n">
+          <text>OG</text>
+          <input type="number" value="{{item.ownGoal}}" data-side="home" data-idx="{{index}}" data-field="ownGoal" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
       </view>
     </view>
   </block>
@@ -104,6 +116,18 @@
         <view class="n">
           <text>RC</text>
           <input type="number" value="{{item.red}}" data-side="away" data-idx="{{index}}" data-field="red" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+        <view class="n">
+          <text>YC</text>
+          <input type="number" value="{{item.yellow}}" data-side="away" data-idx="{{index}}" data-field="yellow" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+        <view class="n">
+          <text>P</text>
+          <input type="number" value="{{item.penalty}}" data-side="away" data-idx="{{index}}" data-field="penalty" bindinput="updatePlayerNumber" class="nInput"/>
+        </view>
+        <view class="n">
+          <text>OG</text>
+          <input type="number" value="{{item.ownGoal}}" data-side="away" data-idx="{{index}}" data-field="ownGoal"     bindinput="updatePlayerNumber" class="nInput"/>
         </view>
       </view>
     </view>
