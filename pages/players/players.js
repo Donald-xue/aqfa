@@ -21,6 +21,62 @@ const {
   upsertTeamLogo
 } = require("../../utils/cloudTeamStore");
 
+function isPlayedMatch(m) {
+  return m && m.homeScore !== null && m.homeScore !== undefined
+    && m.awayScore !== null && m.awayScore !== undefined;
+}
+
+// ✅ 生涯累计：按 playerId 聚合（转会前后也累计）
+// 如果你想“只算本队”，我下面也给你改法
+function computePlayerTotalsFromMatches(matches) {
+  const mp = new Map();
+
+  (matches || []).forEach(m => {
+    if (!isPlayedMatch(m)) return;
+
+    const evs = Array.isArray(m.playerEvents) ? m.playerEvents : [];
+    const appeared = new Set(); // apps: 同场只记一次
+
+    evs.forEach(ev => {
+      if (!ev || !ev.playerId) return;
+
+      const pid = String(ev.playerId);
+      const cur = mp.get(pid) || {
+        goals: 0,
+        assists: 0,
+        MVP: 0,
+        red: 0,
+        yellow: 0,
+        penalty: 0,
+        ownGoal: 0,
+        apps: 0
+      };
+
+      cur.goals += Number(ev.goals) || 0;
+      cur.assists += Number(ev.assists) || 0;
+      cur.MVP += Number(ev.MVP) || 0;
+      cur.red += Number(ev.red) || 0;
+
+      // ✅ 你新增的字段
+      cur.yellow += Number(ev.yellow) || 0;
+      cur.penalty += Number(ev.penalty) || 0;
+      cur.ownGoal += Number(ev.ownGoal) || 0;
+
+      // apps：用 teamId+playerId 避免同场重复
+      const t = String(ev.teamId || "");
+      const aKey = `${t}_${pid}`;
+      if (!appeared.has(aKey)) {
+        cur.apps += 1;
+        appeared.add(aKey);
+      }
+
+      mp.set(pid, cur);
+    });
+  });
+
+  return mp;
+}
+
 Page({
   data: {
     teams: [],
@@ -421,7 +477,7 @@ Page({
     await this.refreshPlayers();
   },
 
-  async refreshPlayers() {
+/*  async refreshPlayers() {
     const team = this.data.teams[this.data.teamIndex];
     if (!team) return;
 
@@ -431,6 +487,49 @@ Page({
     } catch (err) {
       console.error("fetchPlayersByTeam error:", err);
       wx.showToast({ title: "Load failed", icon: "none" });
+    }
+  },*/
+  async refreshPlayers() {
+    const team = this.data.teams[this.data.teamIndex];
+    if (!team) return;
+  
+    try {
+      wx.showLoading({ title: "Loading" });
+  
+      // 1) 当前队球员
+      const players = await fetchPlayersByTeam(team.id);
+  
+      // 2) 拉全部比赛并汇总
+      const { ensureCloudMatchesInitialized, fetchAllMatches } = require("../../utils/cloudMatchStore");
+      const { teams } = loadLeague();
+      await ensureCloudMatchesInitialized(teams);
+      const matches = await fetchAllMatches();
+  
+      const totalsMap = computePlayerTotalsFromMatches(matches);
+  
+      // 3) merge 到当前队球员列表
+      const merged = (players || []).map(p => {
+        const pid = String(p.id || p.playerId || "");
+        const t = totalsMap.get(pid) || {};
+        return {
+          ...p,
+          goals: t.goals || 0,
+          assists: t.assists || 0,
+          yellow: t.yellow || 0,
+          red: t.red || 0,
+          penalty: t.penalty || 0,
+          ownGoal: t.ownGoal || 0,
+          MVP: t.MVP || 0,
+          apps: t.apps || 0
+        };
+      });
+  
+      this.setData({ players: merged });
+    } catch (err) {
+      console.error("refreshPlayers error:", err);
+      wx.showToast({ title: "Load failed", icon: "none" });
+    } finally {
+      wx.hideLoading();
     }
   },
 

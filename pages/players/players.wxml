@@ -84,6 +84,11 @@
           <view class="playerInfo">
             <text class="sub">{{p.star}}⭐</text>
             <text class="name">{{p.name}} 点数：{{p.level || 0}}</text>
+            <text class="sub">
+              场次 {{p.apps || 0}} · G {{p.goals || 0}} · A {{p.assists || 0}}
+              · YC {{p.yellow || 0}} · RC {{p.red || 0}}
+              · P {{p.penalty || 0}} · OG {{p.ownGoal || 0}} · MVP {{p.MVP || 0}}
+            </text>
           </view>
         </view>
 
