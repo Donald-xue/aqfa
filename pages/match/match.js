@@ -278,15 +278,31 @@ Page({
           }));
   
       const playerEvents = pick(this.data.homePlayers).concat(pick(this.data.awayPlayers));
-  
+
+    const d = (this.data.matchDate || "").trim();
+    const t = (this.data.matchTime || "").trim();
+
+    const patch = {
+      homeScore: hg,
+      awayScore: ag,
+      playerEvents
+    };
+
+    // ✅ 只有用户真的填了日期/时间才更新，否则保留云端原值
+    if (d) patch.date = d;
+    if (t) patch.time = t;
+
+    // ✅ 一定带 version，避免别人/旧页面覆盖
+    const ok = await updateMatchById(this.data.fixtureId, patch, this.data.version);
+/*
       const ok = await updateMatchById(this.data.fixtureId, {
-        date: this.data.matchDate,
-        time: this.data.matchTime,
+        date: d,
+        time: t,
         homeScore: hg,
         awayScore: ag,
         playerEvents
       });
-  
+*/  
       if (!ok) {
         wx.showToast({ title: "Save failed", icon: "none" });
         this.setData({ saving: false });
