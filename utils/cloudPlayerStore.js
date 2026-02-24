@@ -132,9 +132,9 @@ async function getTeamCoins(teamName) {
     const my = isHome ? hs : as;
     const opp = isHome ? as : hs;
 
-    if (my > opp) coinsFromMatches += COIN_WIN;
-    else if (my < opp) coinsFromMatches += COIN_LOSS;
-    else coinsFromMatches += COIN_DRAW;
+    if (my > opp) coinsFromMatches += 1000;
+    else if (my < opp) coinsFromMatches += 600;
+    else coinsFromMatches += 800;
   }
 
   // 2) 手动记账：sum(amount)

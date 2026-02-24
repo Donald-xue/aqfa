@@ -11,7 +11,6 @@
     <view class="actions">
       <button size="mini" bindtap="toggleForm">{{showForm ? '取消' : '新增记账'}}</button>
       <button size="mini" bindtap="refresh">刷新</button>
-      <button size="mini" bindtap="clearAllAdjustments">清空记账</button>
     </view>
   </view>
 
