@@ -32,6 +32,7 @@ function computeBoardsFromCloud(matches) {
       assists: 0,
       MVP: 0,
       red: 0,
+      yellow: 0,
       apps: 0
     };
 
@@ -56,6 +57,7 @@ function computeBoardsFromCloud(matches) {
       cur.assists += Number(ev.assists) || 0;
       cur.MVP += Number(ev.MVP) || 0;
       cur.red += Number(ev.red) || 0;
+      cur.yellow += Number(ev.yellow) || 0;
 
       const teamId = ev.teamId || "";
       const playerId = ev.playerId;
@@ -101,7 +103,7 @@ function computeBoardsFromCloud(matches) {
     .map((x, i) => ({ ...x, rank: i + 1 }));
 
   const redBoard = list
-    .filter(x => x.red > 0)
+    .filter(x => x.red > 0 || x.yellow > 0)
     .sort((a, b) => {
       if (b.red !== a.red) return b.red - a.red;
       if (b.apps !== a.apps) return a.apps - b.apps;              // 同红牌出场少优先（你也可反过来）
