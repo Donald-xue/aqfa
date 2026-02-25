@@ -8,7 +8,7 @@ function defaultTeams() {
     { id: "t1", name: "皇家老司机" },
     { id: "t2", name: "学术废物" },
     { id: "t3", name: "香港秦始皇" },
-    { id: "t4", name: "西红柿马铃薯" },
+    { id: "t4", name: "西虹市马铃署" },
     { id: "t5", name: "拜二慕尼黑" },
     { id: "t6", name: "拉斐尔喜悦" },
     { id: "t7", name: "南航小蜘蛛" },

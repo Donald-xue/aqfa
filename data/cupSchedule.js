@@ -2,7 +2,7 @@
 // 4 groups, 3 teams per group, single round robin per group (3 matches each)
 
 const cupGroups = [
-  { groupId: "A", groupName: "小组A组", teams: ["香港秦始皇", "我没意见", "西红柿马铃薯"] },
+  { groupId: "A", groupName: "小组A组", teams: ["香港秦始皇", "我没意见", "西虹市马铃署"] },
   { groupId: "B", groupName: "小组B组", teams: ["学术废物", "南航小蜘蛛", "拜二慕尼黑"] },
   { groupId: "C", groupName: "小组C组", teams: ["皇家老司机", "医药代表", "恶灵骑士"] },
   { groupId: "D", groupName: "小组D组", teams: ["克里文森蓝水泉", "拉斐尔喜悦", "帅气Lee"] },
@@ -17,8 +17,8 @@ const cupGroupMatches = [
 //    { type: "assist", player: "lsq", team: "香港秦始皇", minute: 12 },
 //    { type: "goal", player: "PlayerC", team: "我没意见", minute: 55 }
   ], division: "Group A", cupId: "aqcup", season: "3rd" },
-  { id: 1002, date: "2025-09-03", time: "18:00", home: "香港秦始皇", away: "西红柿马铃薯", homeScore: null, awayScore: null, playerEvents: [], division: "Group A", cupId: "aqcup", season: "3rd" },
-  { id: 1003, date: "2025-09-05", time: "18:00", home: "我没意见", away: "西红柿马铃薯", homeScore: null, awayScore: null, playerEvents: [], division: "Group A", cupId: "aqcup", season: "3rd" },
+  { id: 1002, date: "2025-09-03", time: "18:00", home: "香港秦始皇", away: "西虹市马铃署", homeScore: null, awayScore: null, playerEvents: [], division: "Group A", cupId: "aqcup", season: "3rd" },
+  { id: 1003, date: "2025-09-05", time: "18:00", home: "我没意见", away: "西虹市马铃署", homeScore: null, awayScore: null, playerEvents: [], division: "Group A", cupId: "aqcup", season: "3rd" },
 
   // Group B
   { id: 1101, date: "2025-09-01", time: "20:00", home: "学术废物", away: "南航小蜘蛛", homeScore: null, awayScore: null, playerEvents: [], division: "Group B", cupId: "aqcup", season: "3rd" },
