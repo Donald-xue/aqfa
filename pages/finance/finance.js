@@ -18,7 +18,7 @@ function loadDisplayName() { return wx.getStorageSync(NAME_KEY) || ""; }
 function saveDisplayName(name) { wx.setStorageSync(NAME_KEY, name || ""); }
 
 // 分页拉取工具（通用）
-async function fetchAll(colQuery, pageSize = 50) {
+async function fetchAll(colQuery, pageSize = 20) {
   let skip = 0;
   let all = [];
   while (true) {
@@ -35,13 +35,13 @@ async function fetchAll(colQuery, pageSize = 50) {
 async function loadMatchesFromCloud() {
   // 如果你想按赛季/杯赛过滤，这里加 where({ season: '3rd' }) 等即可
   const q = db.collection(MATCH_COLLECTION).orderBy("date", "asc");
-  return fetchAll(q, 50);
+  return fetchAll(q, 20);
 }
 
 // 拉云端记账记录（按时间倒序）
 async function loadAdjustmentsFromCloud() {
   const q = db.collection(ADJ_COLLECTION).orderBy("createdAt", "desc");
-  return fetchAll(q, 50);
+  return fetchAll(q, 20);
 }
 
 // 从比赛里提取球队（中文名）

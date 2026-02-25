@@ -10,7 +10,9 @@ const PLAYERS = db.collection("players");
 const COL = "players";
 const _ = db.command;
 const MATCHES = db.collection("matches");
+const COIN_WIN = 1000;
 const COIN_DRAW = 800;
+const COIN_LOSS = 600;
 
 const PLAYERS_COL = db.collection("players");
 const FIN_ADJ_COL = db.collection("finance_adjustments");
@@ -99,7 +101,7 @@ async function addPlayerLevelWithCost(teamId, playerId, delta, teamName, created
   return { oldLevel, newLevel, star, cost };
 }
 
-async function fetchAll(query, pageSize = 50) {
+async function fetchAll(query, pageSize = 20) {
   let skip = 0;
   let all = [];
   while (true) {
@@ -132,9 +134,9 @@ async function getTeamCoins(teamName) {
     const my = isHome ? hs : as;
     const opp = isHome ? as : hs;
 
-    if (my > opp) coinsFromMatches += 1000;
-    else if (my < opp) coinsFromMatches += 600;
-    else coinsFromMatches += 800;
+    if (my > opp) coinsFromMatches += COIN_WIN;
+    else if (my < opp) coinsFromMatches += COIN_LOSS;
+    else coinsFromMatches += COIN_DRAW;
   }
 
   // 2) 手动记账：sum(amount)
