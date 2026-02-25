@@ -5,17 +5,17 @@
     
     <view class="field scoreRow">
       <view class="scoreBox">
-        <text class="label">主队得分</text>
+        <text class="label">{{homeTeamName || '主队'}} 得分</text>
         <input type="number" value="{{homeGoals}}" bindinput="onHomeGoals" class="input"/>
       </view>
       <view class="scoreBox">
-        <text class="label">客队得分</text>
+        <text class="label">{{awayTeamName || '客队'}} 得分</text>
         <input type="number" value="{{awayGoals}}" bindinput="onAwayGoals" class="input"/>
       </view>
     </view>
   </view>
 
-  <view class="title">主队 球员</view>
+  <view class="title">{{homeTeamName || '主队'}} 球员</view>
   <view wx:if="{{homePlayers.length===0}}" class="empty">
     No players for this team. Please add in Players page.
   </view>
@@ -75,7 +75,7 @@
 </view>
 
 <view class="card" style="margin-top:16rpx;">
-  <view class="title">客队球员</view>
+  <view class="title">{{awayTeamName || '客队'}} 球员</view>
   <view wx:if="{{awayPlayers.length===0}}" class="empty">
     No players for this team. Please add in Players page.
   </view>
