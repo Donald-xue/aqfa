@@ -3,6 +3,63 @@
 const { loadLeague } = require("../../utils/league");
 const { ensureCloudMatchesInitialized, fetchAllMatches } = require("../../utils/cloudMatchStore");
 
+function groupByRound(list) {
+  const roundMap = new Map();   // round -> matches[]
+  const noRound = [];           // 没有 round 的比赛
+
+  (list || []).forEach(m => {
+    const r = m.round;
+    const hasRound = !(r === null || r === undefined || r === "");
+    if (!hasRound) {
+      noRound.push(m);
+      return;
+    }
+
+    const key = Number(r);
+    if (!roundMap.has(key)) roundMap.set(key, []);
+    roundMap.get(key).push(m);
+  });
+
+  // 组内排序：按 time；同 time 时用 date 做稳定排序（不改变“按 time”的主规则）
+  const sortMatchesByTime = (a, b) => {
+    const ta = a.time || "";
+    const tb = b.time || "";
+    if (ta !== tb) return ta.localeCompare(tb); // "19:30" 这种格式可直接比
+    const da = a.date || "";
+    const db = b.date || "";
+    if (da !== db) return da.localeCompare(db);
+    // 再兜底：用 id（如果有）保证稳定
+    const ia = a.id || a._id || "";
+    const ib = b.id || b._id || "";
+    return String(ia).localeCompare(String(ib));
+  };
+
+  // 有 round 的组：round 升序
+  const rounds = Array.from(roundMap.keys()).sort((a, b) => a - b);
+
+  const groups = rounds.map(r => {
+    const matches = roundMap.get(r) || [];
+    matches.sort(sortMatchesByTime);
+    return {
+      round: r,
+      title: `第 ${r} 轮`,
+      matches
+    };
+  });
+
+  // 没有 round 的比赛：按 time 排序后，整体放到最后一个组
+  if (noRound.length > 0) {
+    noRound.sort(sortMatchesByTime);
+    groups.push({
+      round: "no-round", // WXML 的 wx:key 用这个也行
+      title: "未设置轮次",
+      matches: noRound
+    });
+  }
+
+  return groups;
+}
+
 function groupByDate(list) {
   const map = new Map();
   (list || []).forEach(m => {
@@ -46,7 +103,7 @@ Page({
         teamNames,
         teamIndex: 0,
         allMatches: list,
-        groups: groupByDate(list)
+        groups: groupByRound(list)
       });
     } catch (err) {
       console.error("schedule onShow error:", err);
@@ -74,7 +131,7 @@ Page({
 
     this.setData({
       teamIndex: idx,
-      groups: groupByDate(filtered)
+      groups: groupByRound(filtered)
     });
   }
 });
