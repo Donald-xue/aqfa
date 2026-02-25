@@ -44,11 +44,25 @@ Page({
 
     // 为展示方便把球队名写进 match
     const teamMap = new Map(teams.map(t => [t.id, t.name]));
-    const matchesView = matches.map(m => ({
-      ...m,
-      homeName: teamMap.get(m.homeId) || m.homeId,
-      awayName: teamMap.get(m.awayId) || m.awayId,
-    })).slice().reverse(); // 最新在上
+    const toTs = (m) => {
+      // m.time 现在是 "YYYY-MM-DD HH:mm"
+      // 兼容可能只有 date/time 或者 m.datetime
+      const str = (m.time && String(m.time).trim()) || (m.datetime && String(m.datetime).trim()) || "";
+      if (!str) return 0;
+    
+      // iOS/小程序对 "YYYY-MM-DD HH:mm" 解析不稳定，换成 "YYYY/MM/DD HH:mm"
+      const safe = str.replace(/-/g, "/");
+      const ts = Date.parse(safe);
+      return Number.isNaN(ts) ? 0 : ts;
+    };
+    
+    const matchesView = matches
+      .map(m => ({
+        ...m,
+        homeName: teamMap.get(m.homeId) || m.homeId,
+        awayName: teamMap.get(m.awayId) || m.awayId,
+      }))
+      .sort((a, b) => toTs(b) - toTs(a)); // 时间倒序：最近在最上
 
     this.setData({ table: tableWithLogo, matches: matchesView });
   },
