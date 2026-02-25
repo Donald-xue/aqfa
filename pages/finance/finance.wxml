@@ -65,9 +65,17 @@
     <view class="card">
     <view class="cardTitle">记账记录</view>
 
+    <picker mode="selector"
+      range="{{adjFilterOptions}}"
+      bindchange="onPickAdjFilterTeam">
+      <view class="picker">
+        筛选球队：{{ adjFilterTeamKey || '全部' }}
+      </view>
+    </picker>
+
     <view wx:if="{{adjustments.length===0}}" class="empty">暂无手动记账</view>
 
-    <view wx:for="{{adjustments}}" wx:key="_id" wx:for-item="a" class="logItem">
+    <view wx:for="{{adjustmentsView}}" wx:key="_id" wx:for-item="a" class="logItem">
       <view class="logLeft">
         <text class="logMain">{{a.teamKey}}  {{a.amount}}</text>
         <text class="logSub">{{a.note}}</text>

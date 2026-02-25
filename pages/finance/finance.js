@@ -139,6 +139,11 @@ function computeFinance({ teamOptions, matches, adjustments }) {
   return { rows, summary };
 }
 
+function filterAdjustments(adjustments, teamKey) {
+  if (!teamKey) return adjustments || [];
+  return (adjustments || []).filter(a => a.teamKey === teamKey);
+}
+
 Page({
   data: {
     summary: {},
@@ -150,7 +155,10 @@ Page({
     formTeamKey: "",
     formAmount: "",
     formNote: "",
-    displayName: ""
+    displayName: "",
+    adjFilterTeamKey: "",      // "" = 全部
+    adjustmentsView: [],       // 筛选后用于展示
+    adjFilterOptions: ["全部"]
   },
 
   onShow() {
@@ -170,10 +178,15 @@ Page({
       const teamOptions = extractTeamsFromMatches(matches);
       const { rows, summary } = computeFinance({ teamOptions, matches, adjustments });
 
+      const adjustmentsView = filterAdjustments(adjustments, this.data.adjFilterTeamKey);
+      const adjFilterOptions = ["全部"].concat(teamOptions);
+
       this.setData({
         summary,
         financeRows: rows,
         adjustments,
+        adjustmentsView,      // 筛选后展示
+        adjFilterOptions,
         teamOptions
       });
     } catch (e) {
@@ -183,7 +196,15 @@ Page({
       wx.hideLoading();
     }
   },
-
+  onPickAdjFilterTeam(e) {
+    const idx = Number(e.detail.value);
+    const key = (this.data.adjFilterOptions || [])[idx] || "全部";
+    const teamKey = key === "全部" ? "" : key;
+  
+    const adjustmentsView = filterAdjustments(this.data.adjustments, teamKey);
+    this.setData({ adjFilterTeamKey: teamKey, adjustmentsView });
+  },
+  
   toggleForm() {
     this.setData({
       showForm: !this.data.showForm,
